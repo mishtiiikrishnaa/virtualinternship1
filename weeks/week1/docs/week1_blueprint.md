@@ -1,7 +1,7 @@
 ---
 title: "Strategic Data Collection and Preprocessing Blueprint"
 subtitle: "Public logistics data, Python pipelines, and a reproducible cleaning workflow"
-author: "Mishti Krishna"
+author: "Meghana Krishnakumar Nair"
 date: "31 October 2026"
 ---
 
@@ -97,8 +97,8 @@ polygons, computing great-circle distances, snapping coordinates to road
 networks — requires a reference dataset and a spatial index, and half-building
 it would misrepresent the effort involved. Time-zone-correct timestamps require
 origin and destination zone rules; the synthetic extract uses naive dates and
-the decision log records the deferral. Both are scheduled for weeks 2–4 and
-discussed in section 14 rather than faked here.
+the decision log records the deferral. Neither is required by the tasks that
+follow, so both are recorded as deferred in section 14 rather than faked here.
 
 # 2. What logistics data actually looks like
 
@@ -540,7 +540,7 @@ The strategy applies five rules, in order:
 | grouped median | MAR on the grouping | cheap, robust | thin cells mislead | yes, mode × category |
 | rate-based estimate | cost ∝ billed weight | uses a real relationship | needs a reliable weight | yes, for cost |
 | regression / KNN | MAR, linear or local structure | uses more signal | overfits, uninterpretable | deferred |
-| multiple imputation | MAR, correct model | propagates uncertainty | expensive, needs expertise | deferred to week 4 |
+| multiple imputation | MAR, correct model | propagates uncertainty | expensive, needs expertise | deferred, not needed here |
 | keep as null | MNAR | makes no false claim | downstream must handle nulls | yes, delivery date |
 
 The pipeline deliberately mixes methods: median for weight, a rate model for
@@ -824,44 +824,56 @@ the property that makes the work defensible.
 
 # 14. Plan for weeks 2–4
 
-**Week 2 — real data, same contract.** Replace the synthetic extract with the
-FAF regional database (2018–2024) and re-run. Expect the schema to need
-adjustment: FAF flows are modelled estimates with their own zone and commodity
-codes, so the contract gains a `zone_code` dimension and the validation gains a
-check that every zone resolves against the published zone list. Deliverable: a
-profiling note on the real extract and an updated contract.
+The programme sets three further tasks, and the week 1 output is built to feed
+all three rather than to stand alone. The plan below states what each week
+consumes from this one.
 
-**Week 3 — geospatial and temporal enrichment.** Introduce UN/LOCODE resolution,
-port polygons from OpenStreetMap, and a projected distance calculation. Add
-time-zone-aware timestamps using `zoneinfo`. Deliverable: a lane table with
-distance, and a decision on which CRS is authoritative for each measurement.
+## 14.1 Week 2 — exploratory analysis and visualisation
 
-**Week 4 — quality automation and reporting.** Move the checks into a scheduled
-run with an HTML quality dashboard, add hypothesis-based property tests for the
-unit conversions, and write the data card. Deliverable: a reproducible weekly
-report and a one-page summary of what the pipeline found.
+The cleaned table is the input, which is exactly why the grain, types and flags
+matter. Week 2 works in four passes: univariate distributions for weight, cost,
+transit and quantity; lane-level comparison across the eight countries and four
+modes; outlier and concentration analysis, since freight volumes are famously
+heavy-tailed; and a time dimension, because despatch dates span a year and
+seasonality is the obvious hypothesis. Figures are produced with matplotlib and
+seaborn, with plotly reserved for anything interactive, and every figure carries
+an interpretation rather than a caption. Two variables from week 1's quality
+report become analysis variables in their own right: the imputation flags, to
+test whether filled rows behave differently, and the currency column, to check
+that conversion has not introduced a mode-level artefact.
 
-## 14.1 Acceptance criteria per week
+## 14.2 Week 3 — predictive modelling and forecasting
 
-Each week is accepted against a test rather than a feeling. Week 2 passes when
-the pipeline runs end-to-end on FAF with a documented list of contract changes
-and no manual edits to the curated table. Week 3 passes when every city in a
-sample of two hundred lanes resolves to a coordinate with a recorded method, and
-when a re-run produces identical distances. Week 4 passes when a scheduled run
-publishes a report without a human in the loop and a failed check produces a
-non-zero exit.
+The obvious target is transit time or, as a classification problem, late
+delivery. Features come from the contract: mode, lane, carrier, category,
+weight, quantity, month. The modelling plan is deliberately boring — a mean
+baseline, then linear regression, then a gradient-boosted tree — with a
+time-based split so that the model never sees the future, and a documented
+leakage review, because the two most tempting features (delay days and delivery
+date) are both consequences of the target. Evaluation uses MAE and RMSE on the
+regression, a confusion matrix and precision-recall on the classification, and
+a residual analysis by mode. The p90 lateness definition from week 1 has to be
+either defended or replaced by then; an arbitrarily defined label produces a
+model that predicts the definition rather than the world.
 
-## 14.2 Dependencies and sequencing
+## 14.3 Week 4 — decision support
 
-The weeks are ordered by dependency, not by difficulty. Geospatial work needs a
-resolved city table, and a resolved city table needs the real dataset's own
-vocabulary, so the geospatial phase cannot sensibly precede week 2. Automation
-needs stable checks, and the checks change as soon as real data arrives, so it
-comes last. Inverting that order is the standard way a four-week plan becomes a
-six-week plan with an unmaintained dashboard.
+The final task is integration, not new analysis: one document that carries the
+preprocessing decisions, the exploratory findings and the model results into a
+set of operational recommendations, each tied to the evidence behind it. The
+week 1 artefacts make that easier than it sounds, because the decision log
+already records why each cleaning rule exists and the quality report already
+quantifies what was imputed. The risk register extends to the recommendations
+themselves, and the appendix carries the code that produced each figure.
 
-Each week keeps the same discipline: one schema contract, one entry point, one
-generated report.
+## 14.4 Acceptance criteria per week
+
+Week 2 passes when every figure in the report can be regenerated from a
+committed script and each one carries an interpretation. Week 3 passes when a
+time-based split, a stated baseline and a leakage review are all present, and
+when the reported metric is the one the split actually measures. Week 4 passes
+when a reader who has not seen the code can trace each recommendation back to a
+number in weeks 1–3.
 
 # 15. Conclusion
 
@@ -878,8 +890,8 @@ None of these positions is novel, and that is the point: logistics data is
 messy in predictable ways, and the value of a blueprint lies in applying
 predictable discipline to it. The reference implementation shows what that
 looks like at a small scale — 4,200 rows, thirteen checks, nineteen tests, one
-generated report — and the plan for weeks 2–4 extends the same structure to a
-real public dataset without changing the shape of the argument.
+generated report — and the plan for weeks 2–4 reuses it for exploration,
+prediction and decision support without changing the shape of the argument.
 
 What the work demonstrates, finally, is a habit rather than a technique. A
 pipeline that logs what it changed, fails when it should, and can be re-run by

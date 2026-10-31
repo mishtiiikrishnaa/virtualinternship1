@@ -430,7 +430,7 @@ def build() -> Path:
         _code_blocks(doc)
         _footer(doc)
         doc.core_properties.title = "Strategic Data Collection and Preprocessing Blueprint"
-        doc.core_properties.author = "Mishti Krishna"
+        doc.core_properties.author = "Meghana Krishnakumar Nair"
         doc.core_properties.subject = "Week 1 task — public logistics data and Python preprocessing"
         doc.core_properties.keywords = "logistics, data engineering, pandas, reproducibility"
         doc.save(tmp_docx)
