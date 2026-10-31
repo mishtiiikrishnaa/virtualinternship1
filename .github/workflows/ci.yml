@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: install
+        run: pip install -r requirements.txt
+
+      - name: unit tests
+        run: python -m pytest -q
+
+      - name: regenerate extract and run pipeline
+        # the seeded generator must reproduce the committed extract, and the
+        # pipeline must exit zero, which means no critical check failed
+        run: |
+          python -m src.make_sample_data
+          git diff --exit-code data/raw/shipments_raw.csv
+          python -m src.run_pipeline
+
+      - name: upload quality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-quality-report
+          path: reports/data_quality_report.md
