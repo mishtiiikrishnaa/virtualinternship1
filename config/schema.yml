@@ -1,0 +1,97 @@
+# Schema contract for the cleaned shipment table.
+# Kept in version control so that a change in expectations is reviewable
+# rather than buried in a notebook cell.
+
+table: shipments
+grain: one row per shipment_id
+
+columns:
+  shipment_id:
+    dtype: string
+    nullable: false
+    pattern: '^SHP-\d{5}$'
+  order_id:
+    dtype: string
+    nullable: false
+  order_date:
+    dtype: datetime64[ns]
+    nullable: false
+  ship_date:
+    dtype: datetime64[ns]
+    nullable: false
+  delivery_date:
+    dtype: datetime64[ns]
+    nullable: true
+  origin_city:
+    dtype: string
+    nullable: false
+  origin_country:
+    dtype: category
+    nullable: false
+    allowed: &countries
+      - United States
+      - United Kingdom
+      - Germany
+      - Netherlands
+      - India
+      - China
+      - United Arab Emirates
+      - Singapore
+  dest_city:
+    dtype: string
+    nullable: false
+  dest_country:
+    dtype: category
+    nullable: false
+    allowed: *countries
+  mode:
+    dtype: category
+    nullable: false
+    allowed: [Air, Ocean, Road, Rail]
+  carrier:
+    dtype: string
+    nullable: true
+  product_category:
+    dtype: category
+    nullable: false
+    allowed:
+      - Electronics
+      - Apparel
+      - Pharmaceuticals
+      - Automotive Parts
+      - Consumer Goods
+      - Industrial Equipment
+      - Perishables
+  quantity:
+    dtype: int64
+    nullable: false
+    min: 1
+  weight_kg:
+    dtype: float64
+    nullable: true
+    min: 0.01
+  weight_imputed:
+    dtype: bool
+    nullable: false
+  freight_cost_usd:
+    dtype: float64
+    nullable: true
+    min: 0
+  cost_imputed:
+    dtype: bool
+    nullable: false
+  transit_days:
+    dtype: Int64
+    nullable: true
+    min: 0
+  delay_days:
+    dtype: Int64
+    nullable: true
+
+external_assumptions:
+  - name: unit conversion
+    value: 1 lb = 0.45359237 kg (exact, international avoirdupois pound)
+  - name: fx snapshot
+    value: EUR 1.09, GBP 1.27, INR 0.012 -> USD (pinned, see docs/decision_log.md)
+  - name: transit promise
+    value: carrier promise is taken as the 90th percentile of observed transit days per mode
