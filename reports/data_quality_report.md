@@ -1,6 +1,6 @@
 # Data quality report — shipment table
 
-Generated 2026-10-31 11:28 UTC by `src/run_pipeline.py`. This file is an artefact, not a
+Generated 2026-10-31 11:47 UTC by `src/run_pipeline.py`. This file is an artefact, not a
 document: it is regenerated on every run and its numbers are the numbers the
 cleaned table actually contains.
 
