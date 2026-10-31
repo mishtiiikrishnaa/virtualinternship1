@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Pipeline outputs: regenerable, so they are not committed.
+# The generator script and its seed are committed instead.
+data/processed/*
+!data/processed/.gitkeep
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# LibreOffice lock files
+.~lock.*#

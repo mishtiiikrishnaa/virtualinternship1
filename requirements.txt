@@ -1,0 +1,9 @@
+# Runtime dependencies for the week 1 logistics data blueprint.
+# Pinned deliberately: the whole point of the reproducibility section is that
+# a clean run six months from now produces the same numbers as today.
+pandas==3.0.1
+numpy==2.4.2
+matplotlib==3.10.8
+python-docx==1.2.0
+pyyaml==6.0.3
+pytest==9.0.1
