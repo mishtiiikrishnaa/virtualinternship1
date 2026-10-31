@@ -1,18 +1,16 @@
-.PHONY: data clean test figures report all
+.PHONY: week1 week2 week3 week4 test clean
 
-data:
-	python -m src.make_sample_data
+week1:
+	$(MAKE) -C weeks/week1 all
 
-clean:
-	python -m src.run_pipeline
+week2:
+	@echo "week 2 has not started yet — see weeks/week2/README.md"
+
+week3:
+	@echo "week 3 has not started yet — see weeks/week3/README.md"
+
+week4:
+	@echo "week 4 has not started yet — see weeks/week4/README.md"
 
 test:
-	python -m pytest -q
-
-figures:
-	python -m src.make_figures
-
-report:
-	python -m src.build_report
-
-all: data clean test figures report
+	cd weeks/week1 && python -m pytest -q
