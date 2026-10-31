@@ -54,6 +54,10 @@ python -m src.build_report          # render the .docx (needs pandoc + LibreOffi
 
 `make all` runs the lot in order.
 
+Set `SOURCE_DATE_EPOCH` (a unix timestamp) to pin the timestamp inside the
+generated quality report and the docx properties, so a re-run reproduces the
+published files byte for byte rather than merely producing equivalent ones.
+
 Exit code is `0` only when every critical validation check passes.
 
 ## Result of the reference run

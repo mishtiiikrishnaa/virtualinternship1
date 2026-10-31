@@ -10,6 +10,7 @@ numbers are measured from a rendered PDF rather than guessed.
 
 from __future__ import annotations
 
+import os
 import re
 import shutil
 import subprocess
@@ -429,6 +430,13 @@ def build() -> Path:
         _tables(doc)
         _code_blocks(doc)
         _footer(doc)
+        epoch = os.environ.get("SOURCE_DATE_EPOCH")
+        if epoch:
+            from datetime import datetime, timezone
+
+            stamp = datetime.fromtimestamp(int(epoch), tz=timezone.utc)
+            doc.core_properties.created = stamp
+            doc.core_properties.modified = stamp
         doc.core_properties.title = "Strategic Data Collection and Preprocessing Blueprint"
         doc.core_properties.author = "Meghana Krishnakumar Nair"
         doc.core_properties.subject = "Week 1 task — public logistics data and Python preprocessing"
