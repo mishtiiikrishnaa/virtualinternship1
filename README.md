@@ -44,7 +44,10 @@ python -m src.make_sample_data      # regenerate the messy extract (fixed seed)
 python -m src.run_pipeline          # clean, validate, publish, write report
 python -m pytest -q                 # 19 tests
 python -m src.make_figures          # regenerate the diagrams
+python -m src.build_report          # render the .docx (needs pandoc + LibreOffice)
 ```
+
+`make all` runs the lot in order.
 
 Exit code is `0` only when every critical validation check passes.
 
