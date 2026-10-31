@@ -1,6 +1,6 @@
 # Report description (for the submission form)
 
-The field asks for at least 200 words. Paste the block below; it is 318 words.
+The field asks for at least 200 words. Paste the block below; it is 341 words.
 
 ---
 
@@ -18,11 +18,11 @@ subsequent weeks, while several popular Kaggle uploads are rejected for
 ambiguous provenance and undocumented grain.
 
 The report then specifies a six-stage collection architecture: discovery and
-licensing, acquisition with retries and provenance capture, an immutable
-landing zone, profiling, cleaning, and validation gated publication. Three
-original diagrams describe the end-to-end workflow, the eight cleaning stages,
-and a decision path for missing values. Technical detail is given at the level
-of functions rather than libraries: explicit date-format lists instead of
+licensing, acquisition with retries and provenance capture, an immutable landing
+zone, profiling, cleaning, and validation-gated publication. Three original
+diagrams describe the end-to-end workflow, the eight cleaning stages, and a
+decision path for missing values. Technical detail is given at the level of
+functions rather than libraries: explicit date-format lists instead of
 inference, the exact international pound for unit conversion, a currency parser
 that resolves symbols and decimal-comma conventions, deduplication by latest
 state rather than most complete row, and grouped median imputation with
@@ -35,4 +35,6 @@ rows is cleaned to 4,200 typed rows through thirteen validation checks and
 nineteen unit tests, with every transform logged and a data-quality report
 regenerated on each run. All figures and report numbers are produced by code,
 so the claims in the document can be reproduced from a clean checkout with two
-commands.
+commands. The report also states its own limitations: the development extract is
+synthetic by design, and geospatial and time-zone enrichment are deferred rather
+than half-implemented.
