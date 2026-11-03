@@ -53,8 +53,8 @@ python -m src.build_report    # rebuild the .docx (needs pandoc + libreoffice)
 ```
 
 Or from the repository root: `make week1` or `make week2`. Week 2 needs a
-Chrome build once for plotly's static export (`plotly_get_chrome -y`), and its
-PDF is rendered from the docx with LibreOffice.
+Chrome build once for plotly's static export (`plotly_get_chrome -y`); its PDF
+is rendered with LibreOffice and compressed with Ghostscript.
 
 ## Why one repository
 

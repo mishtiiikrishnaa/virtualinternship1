@@ -40,8 +40,9 @@ python -m src.clean              # parse, convert, deduplicate, flag
 python -m src.analyze            # writes every number the report quotes
 python -m src.make_figures       # 15 figures at 200 dpi, plus a plotly HTML export
 python -m src.build_report       # .docx, prose assembled from results/*.json
+sh src/render_pdf.sh             # PDF proof, compressed under the 2 MB cap
 python -m src.build_notebook     # executes notebooks/week2_eda.ipynb in place
-python -m src.audit              # 20 checks; non-zero exit on failure
+python -m src.audit              # 21 checks; non-zero exit on failure
 ```
 
 From the repository root, `make week2` runs the same chain.
@@ -49,15 +50,20 @@ From the repository root, `make week2` runs the same chain.
 The PDF proof is rendered from the docx, not built by python:
 
 ```bash
-soffice --headless --convert-to pdf --outdir reports \
-  reports/Week2_EDA_and_Visualization.docx
+sh src/render_pdf.sh
 ```
+
+That converts with LibreOffice, then re-encodes the images as JPEG at 200
+dots per inch with Ghostscript. The docx keeps 256-colour PNGs, so the Word
+file stays crisp at 0.92 MB; the PDF lands at 1.88 MB. Both are under the
+portal's 2 MB upload cap, and the audit fails the build if either grows past
+it.
 
 `src/audit.py` is the submission gate, not decoration. It counts prose words,
 checks figure count, alt text and interpretation length, verifies that all
 fifteen task requirements appear in the coverage matrix, scans for placeholder
 text and British spellings, and re-reads the JSON to confirm that quoted numbers
-match their source. A passing run prints `PASS` on all twenty checks.
+match their source. A passing run prints `PASS` on all twenty-one checks.
 
 Plotly's static export needs a Chrome build for kaleido:
 

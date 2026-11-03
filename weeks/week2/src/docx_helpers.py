@@ -7,6 +7,8 @@ words.
 
 from __future__ import annotations
 
+import os
+import tempfile
 from pathlib import Path
 
 from docx import Document
@@ -64,6 +66,24 @@ def _field(paragraph, instruction: str, placeholder: str = "1") -> None:
     run._r.append(separate)
     run._r.append(text)
     run._r.append(end)
+
+
+def _compressed_png(path: Path) -> str:
+    """Re-encode a chart as a 256-colour PNG for embedding.
+
+    The figure files on disk stay as full-colour PNGs; this only shrinks the
+    copy inside the .docx, where the upload limit matters. At 256 colours the
+    difference is invisible at print size and the document halves in weight.
+    """
+    from PIL import Image
+
+    image = Image.open(path).convert("RGB")
+    image = image.quantize(colors=256, method=Image.Quantize.MEDIANCUT,
+                           dither=Image.Dither.FLOYDSTEINBERG)
+    handle, temporary = tempfile.mkstemp(suffix=".png")
+    os.close(handle)
+    image.save(temporary, "PNG", optimize=True, compress_level=9, dpi=(200, 200))
+    return temporary
 
 
 class Report:
@@ -259,7 +279,11 @@ class Report:
         paragraph.paragraph_format.space_before = Pt(4)
         paragraph.paragraph_format.space_after = Pt(2)
         paragraph.paragraph_format.keep_with_next = True
-        inline = paragraph.add_run().add_picture(str(path), width=Cm(width_cm))
+        embedded = _compressed_png(path)
+        try:
+            inline = paragraph.add_run().add_picture(embedded, width=Cm(width_cm))
+        finally:
+            os.unlink(embedded)
         docPr = inline._inline.docPr
         docPr.set("descr", alt)
         docPr.set("title", alt[:120])

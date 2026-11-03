@@ -12,6 +12,7 @@ week2:
 	cd weeks/week2 && $(PYTHON) -m src.analyze
 	cd weeks/week2 && $(PYTHON) -m src.make_figures
 	cd weeks/week2 && $(PYTHON) -m src.build_report
+	cd weeks/week2 && sh src/render_pdf.sh
 	cd weeks/week2 && $(PYTHON) -m src.build_notebook
 	cd weeks/week2 && $(PYTHON) -m src.audit
 

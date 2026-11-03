@@ -22,6 +22,7 @@ from docx.oxml.ns import qn
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCX = ROOT / "reports" / "Week2_EDA_and_Visualization.docx"
+PDF = ROOT / "reports" / "Week2_EDA_and_Visualization.pdf"
 RESULTS = ROOT / "results"
 FIGDIR = ROOT / "figures"
 
@@ -211,6 +212,11 @@ def main() -> int:
                 (FIGDIR / "fig14_monthly_by_mode.html").exists(), "fig14 HTML")
     ok &= check("Tables numbered 1..N", True,
                 f"{len(doc.tables)} tables")
+    largest = max(DOCX.stat().st_size, PDF.stat().st_size if PDF.exists() else 0)
+    ok &= check("Report and PDF under 2 MB", largest < 2_000_000,
+                f"docx {DOCX.stat().st_size / 1e6:.2f} MB, "
+                + (f"pdf {PDF.stat().st_size / 1e6:.2f} MB" if PDF.exists()
+                   else "pdf missing"))
     ok &= check("Validation matched all planted effects",
                 R["validation"]["matched"] == R["validation"]["total"],
                 f"{R['validation']['matched']}/{R['validation']['total']}")
