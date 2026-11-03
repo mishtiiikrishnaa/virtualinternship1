@@ -1,0 +1,305 @@
+{
+  "rows_raw": 50600,
+  "cols_raw": 18,
+  "rows_clean": 49935,
+  "cols_clean": 35,
+  "date_min": "2024-01-01",
+  "date_max": "2025-12-31",
+  "memory_mb": 44.5,
+  "dtype_counts": {
+    "str": 13,
+    "float64": 11,
+    "datetime64[us]": 4,
+    "bool": 4,
+    "int64": 3
+  },
+  "missing": [
+    {
+      "column": "shipment_id",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 49935
+    },
+    {
+      "column": "order_date",
+      "dtype": "datetime64[us]",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 731
+    },
+    {
+      "column": "ship_date",
+      "dtype": "datetime64[us]",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 733
+    },
+    {
+      "column": "delivery_date",
+      "dtype": "datetime64[us]",
+      "missing": 1088,
+      "missing_pct": 2.18,
+      "unique": 767
+    },
+    {
+      "column": "origin",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 12
+    },
+    {
+      "column": "destination",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 10
+    },
+    {
+      "column": "lane",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 117
+    },
+    {
+      "column": "mode",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 4
+    },
+    {
+      "column": "carrier",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 13
+    },
+    {
+      "column": "weight_kg",
+      "dtype": "float64",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 41942
+    },
+    {
+      "column": "volume_m3",
+      "dtype": "float64",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 17626
+    },
+    {
+      "column": "distance_km",
+      "dtype": "float64",
+      "missing": 8,
+      "missing_pct": 0.02,
+      "unique": 41284
+    },
+    {
+      "column": "freight_cost_usd",
+      "dtype": "float64",
+      "missing": 2619,
+      "missing_pct": 5.24,
+      "unique": 46103
+    },
+    {
+      "column": "promised_days",
+      "dtype": "float64",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 12
+    },
+    {
+      "column": "status",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 4
+    },
+    {
+      "column": "priority",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 4
+    },
+    {
+      "column": "weight_unit",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 1
+    },
+    {
+      "column": "volume_unit",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 1
+    },
+    {
+      "column": "weight_imputed",
+      "dtype": "bool",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2
+    },
+    {
+      "column": "cost_missing",
+      "dtype": "bool",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2
+    },
+    {
+      "column": "transit_days",
+      "dtype": "float64",
+      "missing": 1088,
+      "missing_pct": 2.18,
+      "unique": 67
+    },
+    {
+      "column": "delay_days",
+      "dtype": "float64",
+      "missing": 1088,
+      "missing_pct": 2.18,
+      "unique": 64
+    },
+    {
+      "column": "on_time",
+      "dtype": "float64",
+      "missing": 1088,
+      "missing_pct": 2.18,
+      "unique": 2
+    },
+    {
+      "column": "cost_per_kg",
+      "dtype": "float64",
+      "missing": 2619,
+      "missing_pct": 5.24,
+      "unique": 47315
+    },
+    {
+      "column": "cost_per_km",
+      "dtype": "float64",
+      "missing": 2625,
+      "missing_pct": 5.26,
+      "unique": 47310
+    },
+    {
+      "column": "speed_km_per_day",
+      "dtype": "float64",
+      "missing": 1095,
+      "missing_pct": 2.19,
+      "unique": 46621
+    },
+    {
+      "column": "month",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 24
+    },
+    {
+      "column": "month_start",
+      "dtype": "datetime64[us]",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 24
+    },
+    {
+      "column": "quarter",
+      "dtype": "int64",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 4
+    },
+    {
+      "column": "year",
+      "dtype": "int64",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2
+    },
+    {
+      "column": "weekday",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 7
+    },
+    {
+      "column": "week",
+      "dtype": "int64",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 52
+    },
+    {
+      "column": "is_q4",
+      "dtype": "bool",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2
+    },
+    {
+      "column": "lane_type",
+      "dtype": "str",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2
+    },
+    {
+      "column": "outlier_cost_iqr",
+      "dtype": "bool",
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2
+    }
+  ],
+  "rows_with_any_missing": 3647,
+  "rows_with_any_missing_pct": 7.3,
+  "status_counts": {
+    "Delivered": 40459,
+    "Delayed": 8388,
+    "In Transit": 735,
+    "Cancelled": 353
+  },
+  "mode_counts": {
+    "Sea": 18655,
+    "Road": 14373,
+    "Air": 12574,
+    "Rail": 4333
+  },
+  "carrier_counts": {
+    "Northwind Cargo": 7031,
+    "Cobalt Lines": 6815,
+    "Eastwind Shipping": 5854,
+    "Beacon Logistics": 5623,
+    "Harborlink": 5507,
+    "Jetstream Express": 3645,
+    "Atlas Freight": 3616,
+    "Falcon Air Cargo": 3411,
+    "Keystone Freight": 2702,
+    "Dunmore Cargo": 2460,
+    "Granite Haulage": 1862,
+    "Ironline Rail": 1218,
+    "Unassigned": 191
+  },
+  "priority_counts": {
+    "Standard": 31302,
+    "High": 11017,
+    "Low": 7338,
+    "Unspecified": 278
+  },
+  "lane_count": 117,
+  "shipment_count": 49935,
+  "on_time_eligible": 48847,
+  "on_time_rate": 0.8283,
+  "cost_scored_rows": 47316,
+  "cost_missing_rows": 2619,
+  "cost_missing_share": 0.0524
+}

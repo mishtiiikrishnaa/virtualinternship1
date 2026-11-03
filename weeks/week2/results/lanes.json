@@ -1,0 +1,250 @@
+{
+  "lane_count": 117,
+  "top10_share": 0.2904,
+  "top15_share_pct": 38.5,
+  "top10_share_pct": 29.0,
+  "hhi": 0.016,
+  "effective_lanes": 62.2,
+  "lanes_for_80pct": 55,
+  "lanes_for_80pct_share": 47.0,
+  "top_lanes": [
+    {
+      "lane": "Chicago -> Los Angeles",
+      "shipments": 1887,
+      "share_pct": 3.8,
+      "cum_share_pct": 3.8,
+      "on_time": 0.8082,
+      "median_transit": 7.0,
+      "median_cost": 1565.26
+    },
+    {
+      "lane": "Dallas -> Los Angeles",
+      "shipments": 1841,
+      "share_pct": 3.7,
+      "cum_share_pct": 7.5,
+      "on_time": 0.8319,
+      "median_transit": 6.0,
+      "median_cost": 1003.96
+    },
+    {
+      "lane": "Atlanta -> Los Angeles",
+      "shipments": 1826,
+      "share_pct": 3.7,
+      "cum_share_pct": 11.1,
+      "on_time": 0.7716,
+      "median_transit": 7.0,
+      "median_cost": 1652.07
+    },
+    {
+      "lane": "Shanghai -> Los Angeles",
+      "shipments": 1642,
+      "share_pct": 3.3,
+      "cum_share_pct": 14.4,
+      "on_time": 0.8486,
+      "median_transit": 19.0,
+      "median_cost": 6253.885
+    },
+    {
+      "lane": "Atlanta -> Chicago",
+      "shipments": 1378,
+      "share_pct": 2.8,
+      "cum_share_pct": 17.2,
+      "on_time": 0.8512,
+      "median_transit": 6.0,
+      "median_cost": 494.62
+    },
+    {
+      "lane": "Dallas -> Chicago",
+      "shipments": 1310,
+      "share_pct": 2.6,
+      "cum_share_pct": 19.8,
+      "on_time": 0.8532,
+      "median_transit": 6.0,
+      "median_cost": 664.75
+    },
+    {
+      "lane": "Shanghai -> Chicago",
+      "shipments": 1247,
+      "share_pct": 2.5,
+      "cum_share_pct": 22.3,
+      "on_time": 0.8347,
+      "median_transit": 19.5,
+      "median_cost": 6469.46
+    },
+    {
+      "lane": "Chicago -> Dallas",
+      "shipments": 1185,
+      "share_pct": 2.4,
+      "cum_share_pct": 24.7,
+      "on_time": 0.8322,
+      "median_transit": 6.0,
+      "median_cost": 664.53
+    },
+    {
+      "lane": "Shenzhen -> Los Angeles",
+      "shipments": 1129,
+      "share_pct": 2.3,
+      "cum_share_pct": 26.9,
+      "on_time": 0.8317,
+      "median_transit": 19.0,
+      "median_cost": 7177.73
+    },
+    {
+      "lane": "Atlanta -> Dallas",
+      "shipments": 1054,
+      "share_pct": 2.1,
+      "cum_share_pct": 29.0,
+      "on_time": 0.8461,
+      "median_transit": 6.0,
+      "median_cost": 625.14
+    },
+    {
+      "lane": "Mumbai -> Los Angeles",
+      "shipments": 1041,
+      "share_pct": 2.1,
+      "cum_share_pct": 31.1,
+      "on_time": 0.7724,
+      "median_transit": 19.0,
+      "median_cost": 8093.93
+    },
+    {
+      "lane": "Chicago -> New York",
+      "shipments": 967,
+      "share_pct": 1.9,
+      "cum_share_pct": 33.1,
+      "on_time": 0.8479,
+      "median_transit": 6.0,
+      "median_cost": 545.06
+    },
+    {
+      "lane": "Shanghai -> Dallas",
+      "shipments": 941,
+      "share_pct": 1.9,
+      "cum_share_pct": 34.9,
+      "on_time": 0.821,
+      "median_transit": 18.0,
+      "median_cost": 6574.41
+    },
+    {
+      "lane": "Atlanta -> New York",
+      "shipments": 888,
+      "share_pct": 1.8,
+      "cum_share_pct": 36.7,
+      "on_time": 0.8598,
+      "median_transit": 6.0,
+      "median_cost": 662.93
+    },
+    {
+      "lane": "Dallas -> New York",
+      "shipments": 878,
+      "share_pct": 1.8,
+      "cum_share_pct": 38.5,
+      "on_time": 0.7883,
+      "median_transit": 7.0,
+      "median_cost": 1162.45
+    }
+  ],
+  "lane_mode": {
+    "Chicago -> Los Angeles": {
+      "Air": 126,
+      "Road": 1354,
+      "Rail": 407,
+      "Sea": 0
+    },
+    "Dallas -> Los Angeles": {
+      "Air": 112,
+      "Road": 1340,
+      "Rail": 389,
+      "Sea": 0
+    },
+    "Atlanta -> Los Angeles": {
+      "Air": 120,
+      "Road": 1306,
+      "Rail": 400,
+      "Sea": 0
+    },
+    "Shanghai -> Los Angeles": {
+      "Air": 611,
+      "Road": 0,
+      "Rail": 0,
+      "Sea": 1031
+    },
+    "Atlanta -> Chicago": {
+      "Air": 101,
+      "Road": 987,
+      "Rail": 290,
+      "Sea": 0
+    },
+    "Dallas -> Chicago": {
+      "Air": 72,
+      "Road": 925,
+      "Rail": 313,
+      "Sea": 0
+    },
+    "Shanghai -> Chicago": {
+      "Air": 444,
+      "Road": 0,
+      "Rail": 0,
+      "Sea": 803
+    },
+    "Chicago -> Dallas": {
+      "Air": 58,
+      "Road": 870,
+      "Rail": 257,
+      "Sea": 0
+    },
+    "Shenzhen -> Los Angeles": {
+      "Air": 424,
+      "Road": 0,
+      "Rail": 0,
+      "Sea": 705
+    },
+    "Atlanta -> Dallas": {
+      "Air": 56,
+      "Road": 781,
+      "Rail": 217,
+      "Sea": 0
+    },
+    "Mumbai -> Los Angeles": {
+      "Air": 420,
+      "Road": 0,
+      "Rail": 0,
+      "Sea": 621
+    },
+    "Chicago -> New York": {
+      "Air": 55,
+      "Road": 702,
+      "Rail": 210,
+      "Sea": 0
+    },
+    "Shanghai -> Dallas": {
+      "Air": 375,
+      "Road": 0,
+      "Rail": 0,
+      "Sea": 566
+    },
+    "Atlanta -> New York": {
+      "Air": 44,
+      "Road": 622,
+      "Rail": 222,
+      "Sea": 0
+    },
+    "Dallas -> New York": {
+      "Air": 53,
+      "Road": 636,
+      "Rail": 189,
+      "Sea": 0
+    }
+  },
+  "best_lane": {
+    "lane": "Rotterdam -> New York",
+    "on_time": 0.9465,
+    "shipments": 322
+  },
+  "worst_lane": {
+    "lane": "Singapore -> Dallas",
+    "on_time": 0.7289,
+    "shipments": 284
+  },
+  "reliable_lane_count": 77
+}

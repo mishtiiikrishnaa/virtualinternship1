@@ -13,7 +13,7 @@ history for each week stays legible.
 | week | focus | status | folder |
 |---|---|---|---|
 | 1 | Strategic data collection and preprocessing blueprint | submitted | [`weeks/week1`](weeks/week1) |
-| 2 | Real dataset ingestion, profiling and contract changes | not started | [`weeks/week2`](weeks/week2) |
+| 2 | Exploratory data analysis and visualization | submitted | [`weeks/week2`](weeks/week2) |
 | 3 | Geospatial and temporal enrichment | not started | [`weeks/week3`](weeks/week3) |
 | 4 | Quality automation, scheduled runs and reporting | not started | [`weeks/week4`](weeks/week4) |
 
@@ -52,7 +52,9 @@ python -m pytest -q           # 19 tests
 python -m src.build_report    # rebuild the .docx (needs pandoc + libreoffice)
 ```
 
-Or from the repository root: `make week1`.
+Or from the repository root: `make week1` or `make week2`. Week 2 needs a
+Chrome build once for plotly's static export (`plotly_get_chrome -y`), and its
+PDF is rendered from the docx with LibreOffice.
 
 ## Why one repository
 

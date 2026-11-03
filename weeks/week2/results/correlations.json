@@ -1,0 +1,213 @@
+{
+  "n": 46288,
+  "pearson": {
+    "transit_days": {
+      "transit_days": 1.0,
+      "distance_km": 0.6464,
+      "weight_kg": 0.1874,
+      "volume_m3": 0.2048,
+      "freight_cost_usd": 0.2156,
+      "cost_per_kg": -0.2783,
+      "promised_days": 0.9006,
+      "delay_days": -0.0858
+    },
+    "distance_km": {
+      "transit_days": 0.6464,
+      "distance_km": 1.0,
+      "weight_kg": 0.0702,
+      "volume_m3": 0.0751,
+      "freight_cost_usd": 0.3675,
+      "cost_per_kg": 0.2192,
+      "promised_days": 0.6904,
+      "delay_days": -0.3036
+    },
+    "weight_kg": {
+      "transit_days": 0.1874,
+      "distance_km": 0.0702,
+      "weight_kg": 1.0,
+      "volume_m3": 0.916,
+      "freight_cost_usd": 0.3875,
+      "cost_per_kg": -0.1416,
+      "promised_days": 0.2171,
+      "delay_days": -0.1268
+    },
+    "volume_m3": {
+      "transit_days": 0.2048,
+      "distance_km": 0.0751,
+      "weight_kg": 0.916,
+      "volume_m3": 1.0,
+      "freight_cost_usd": 0.4315,
+      "cost_per_kg": -0.1517,
+      "promised_days": 0.237,
+      "delay_days": -0.138
+    },
+    "freight_cost_usd": {
+      "transit_days": 0.2156,
+      "distance_km": 0.3675,
+      "weight_kg": 0.3875,
+      "volume_m3": 0.4315,
+      "freight_cost_usd": 1.0,
+      "cost_per_kg": 0.186,
+      "promised_days": 0.2363,
+      "delay_days": -0.115
+    },
+    "cost_per_kg": {
+      "transit_days": -0.2783,
+      "distance_km": 0.2192,
+      "weight_kg": -0.1416,
+      "volume_m3": -0.1517,
+      "freight_cost_usd": 0.186,
+      "cost_per_kg": 1.0,
+      "promised_days": -0.3145,
+      "delay_days": 0.1703
+    },
+    "promised_days": {
+      "transit_days": 0.9006,
+      "distance_km": 0.6904,
+      "weight_kg": 0.2171,
+      "volume_m3": 0.237,
+      "freight_cost_usd": 0.2363,
+      "cost_per_kg": -0.3145,
+      "promised_days": 1.0,
+      "delay_days": -0.5104
+    },
+    "delay_days": {
+      "transit_days": -0.0858,
+      "distance_km": -0.3036,
+      "weight_kg": -0.1268,
+      "volume_m3": -0.138,
+      "freight_cost_usd": -0.115,
+      "cost_per_kg": 0.1703,
+      "promised_days": -0.5104,
+      "delay_days": 1.0
+    }
+  },
+  "spearman": {
+    "transit_days": {
+      "transit_days": 1.0,
+      "distance_km": 0.5146,
+      "weight_kg": 0.5995,
+      "volume_m3": 0.5922,
+      "freight_cost_usd": 0.3038,
+      "cost_per_kg": -0.1833,
+      "promised_days": 0.9032,
+      "delay_days": -0.193
+    },
+    "distance_km": {
+      "transit_days": 0.5146,
+      "distance_km": 1.0,
+      "weight_kg": 0.2465,
+      "volume_m3": 0.2441,
+      "freight_cost_usd": 0.7163,
+      "cost_per_kg": 0.6356,
+      "promised_days": 0.4614,
+      "delay_days": -0.2572
+    },
+    "weight_kg": {
+      "transit_days": 0.5995,
+      "distance_km": 0.2465,
+      "weight_kg": 1.0,
+      "volume_m3": 0.981,
+      "freight_cost_usd": 0.5689,
+      "cost_per_kg": -0.4032,
+      "promised_days": 0.6655,
+      "delay_days": -0.3686
+    },
+    "volume_m3": {
+      "transit_days": 0.5922,
+      "distance_km": 0.2441,
+      "weight_kg": 0.981,
+      "volume_m3": 1.0,
+      "freight_cost_usd": 0.5634,
+      "cost_per_kg": -0.3904,
+      "promised_days": 0.6576,
+      "delay_days": -0.3651
+    },
+    "freight_cost_usd": {
+      "transit_days": 0.3038,
+      "distance_km": 0.7163,
+      "weight_kg": 0.5689,
+      "volume_m3": 0.5634,
+      "freight_cost_usd": 1.0,
+      "cost_per_kg": 0.4619,
+      "promised_days": 0.2607,
+      "delay_days": -0.191
+    },
+    "cost_per_kg": {
+      "transit_days": -0.1833,
+      "distance_km": 0.6356,
+      "weight_kg": -0.4032,
+      "volume_m3": -0.3904,
+      "freight_cost_usd": 0.4619,
+      "cost_per_kg": 1.0,
+      "promised_days": -0.2924,
+      "delay_days": 0.109
+    },
+    "promised_days": {
+      "transit_days": 0.9032,
+      "distance_km": 0.4614,
+      "weight_kg": 0.6655,
+      "volume_m3": 0.6576,
+      "freight_cost_usd": 0.2607,
+      "cost_per_kg": -0.2924,
+      "promised_days": 1.0,
+      "delay_days": -0.5317
+    },
+    "delay_days": {
+      "transit_days": -0.193,
+      "distance_km": -0.2572,
+      "weight_kg": -0.3686,
+      "volume_m3": -0.3651,
+      "freight_cost_usd": -0.191,
+      "cost_per_kg": 0.109,
+      "promised_days": -0.5317,
+      "delay_days": 1.0
+    }
+  },
+  "top_pairs": [
+    {
+      "pair": "weight_kg / volume_m3",
+      "pearson": 0.916,
+      "spearman": 0.981
+    },
+    {
+      "pair": "transit_days / promised_days",
+      "pearson": 0.9006,
+      "spearman": 0.9032
+    },
+    {
+      "pair": "distance_km / freight_cost_usd",
+      "pearson": 0.3675,
+      "spearman": 0.7163
+    },
+    {
+      "pair": "weight_kg / promised_days",
+      "pearson": 0.2171,
+      "spearman": 0.6655
+    },
+    {
+      "pair": "volume_m3 / promised_days",
+      "pearson": 0.237,
+      "spearman": 0.6576
+    },
+    {
+      "pair": "distance_km / cost_per_kg",
+      "pearson": 0.2192,
+      "spearman": 0.6356
+    }
+  ],
+  "vif": {
+    "weight_kg": 6.19,
+    "volume_m3": 6.2,
+    "distance_km": 1.01
+  },
+  "cost_distance": {
+    "r": 0.3691,
+    "p": 0.0,
+    "ci_low": 0.3613,
+    "ci_high": 0.3768
+  },
+  "weight_volume_r": 0.916,
+  "cost_weight_r": 0.5689,
+  "cost_distance_r": 0.7163
+}

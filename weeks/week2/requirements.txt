@@ -1,0 +1,17 @@
+# Runtime dependencies for the week 2 EDA and visualization package.
+# Pinned deliberately: every number in the report is reproduced by re-running
+# the pipeline, so the versions that produced it have to be recoverable.
+pandas==3.0.1
+numpy==2.4.2
+matplotlib==3.10.8
+seaborn==0.13.2
+plotly==7.1.0
+kaleido==1.5.0
+scipy==1.17.1
+statsmodels==0.14.6
+python-docx==1.2.0
+nbformat==5.11.1
+nbclient==0.11.0
+ipykernel==7.4.0
+requests==2.32.5
+Pillow==12.3.0

@@ -1,0 +1,86 @@
+{
+  "transit_days": {
+    "n": 48847,
+    "raw": {
+      "skew": 0.9407,
+      "kurtosis": -0.0198,
+      "dagostino_stat": 5268.2451,
+      "dagostino_p": 0.0
+    },
+    "log": {
+      "skew": -0.0251,
+      "kurtosis": -1.0834,
+      "dagostino_stat": 18150.1502,
+      "dagostino_p": 0.0
+    },
+    "shapiro_sample_n": 5000,
+    "shapiro_raw_stat": 0.86,
+    "shapiro_raw_p": 0.0,
+    "shapiro_log_stat": 0.9511,
+    "shapiro_log_p": 0.0,
+    "log_transform_justified": true
+  },
+  "freight_cost_usd": {
+    "n": 47316,
+    "raw": {
+      "skew": 15.5508,
+      "kurtosis": 688.2525,
+      "dagostino_stat": 93944.2039,
+      "dagostino_p": 0.0
+    },
+    "log": {
+      "skew": -0.3153,
+      "kurtosis": -0.3483,
+      "dagostino_stat": 1103.3914,
+      "dagostino_p": 0.0
+    },
+    "shapiro_sample_n": 5000,
+    "shapiro_raw_stat": 0.255,
+    "shapiro_raw_p": 0.0,
+    "shapiro_log_stat": 0.991,
+    "shapiro_log_p": 0.0,
+    "log_transform_justified": true
+  },
+  "weight_kg": {
+    "n": 49935,
+    "raw": {
+      "skew": 18.3644,
+      "kurtosis": 735.2223,
+      "dagostino_stat": 106165.9812,
+      "dagostino_p": 0.0
+    },
+    "log": {
+      "skew": 0.0282,
+      "kurtosis": -0.3467,
+      "dagostino_stat": 377.2276,
+      "dagostino_p": 0.0
+    },
+    "shapiro_sample_n": 5000,
+    "shapiro_raw_stat": 0.3018,
+    "shapiro_raw_p": 0.0,
+    "shapiro_log_stat": 0.9963,
+    "shapiro_log_p": 7e-10,
+    "log_transform_justified": true
+  },
+  "cost_per_kg": {
+    "n": 47316,
+    "raw": {
+      "skew": 10.5719,
+      "kurtosis": 233.7986,
+      "dagostino_stat": 77089.2406,
+      "dagostino_p": 0.0
+    },
+    "log": {
+      "skew": 0.3335,
+      "kurtosis": -0.3979,
+      "dagostino_stat": 1328.0269,
+      "dagostino_p": 0.0
+    },
+    "shapiro_sample_n": 5000,
+    "shapiro_raw_stat": 0.4224,
+    "shapiro_raw_p": 0.0,
+    "shapiro_log_stat": 0.9606,
+    "shapiro_log_p": 0.0,
+    "log_transform_justified": true
+  }
+}

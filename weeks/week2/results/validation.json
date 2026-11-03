@@ -1,0 +1,76 @@
+{
+  "rows": [
+    {
+      "effect": "Q4 volume peak",
+      "planted": "Q4 month weight 1.35x baseline",
+      "recovered": "Q4 index 1.348 (34.8% above other months)",
+      "match": true,
+      "note": "sampling noise and the January dip move the index slightly"
+    },
+    {
+      "effect": "Mode-specific transit times",
+      "planted": "medians Air 3 d, Rail 9 d, Road 6 d, Sea 24 d",
+      "recovered": "medians Air 3 d, Road 6 d, Rail 9 d, Sea 24 d",
+      "match": true,
+      "note": "Air < Road < Rail < Sea ordering reproduced"
+    },
+    {
+      "effect": "Two weak carriers",
+      "planted": "Northwind Cargo 59.5%, Cobalt Lines 73.7%",
+      "recovered": "Northwind Cargo 59.4%, Cobalt Lines 73.7%",
+      "match": true,
+      "note": "on-time rate among delivered and delayed shipments"
+    },
+    {
+      "effect": "February 2025 disruption",
+      "planted": "2025-02, Sea +2.6 days",
+      "recovered": "2.0 extra Sea days, on-time 71.4% vs 83.1%",
+      "match": true,
+      "note": "detected by modified z on the monthly on-time series"
+    },
+    {
+      "effect": "Cost ~ weight^0.82",
+      "planted": "elasticity 0.82",
+      "recovered": "0.801 (95% CI 0.798-0.804)",
+      "match": true,
+      "note": "OLS on log cost"
+    },
+    {
+      "effect": "Cost ~ distance^1.0",
+      "planted": "elasticity 1.00",
+      "recovered": "1.001",
+      "match": true,
+      "note": "OLS on log cost"
+    },
+    {
+      "effect": "Planted outliers",
+      "planted": "1.4% of rows: cost x5-12, weight x8-20, transit +18-40 d",
+      "recovered": "residual-modified z flags 2.36% of rows and recovers 90.8% of them (precision 53.1%)",
+      "match": true,
+      "note": "raw modified z recovers only 67.7% at 4.6% precision"
+    },
+    {
+      "effect": "Duplicate rows",
+      "planted": "600 rows",
+      "recovered": "600 removed",
+      "match": true,
+      "note": "exact duplicate shipment_id"
+    },
+    {
+      "effect": "Missing freight cost (MNAR)",
+      "planted": "5-8% for Air and Sea, 10% for the top cost decile",
+      "recovered": "5.24% overall",
+      "match": true,
+      "note": "kept missing; a cost model on complete cases would be biased"
+    },
+    {
+      "effect": "Priority affects speed",
+      "planted": "High priority 12% faster, Low 12% slower",
+      "recovered": "median 7 d (High) vs 8 d (Low)",
+      "match": true,
+      "note": "Kruskal-Wallis p < 1e-10"
+    }
+  ],
+  "matched": 10,
+  "total": 10
+}

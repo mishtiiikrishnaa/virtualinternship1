@@ -1,0 +1,19 @@
+{
+  "mode_label_variants": 3988,
+  "carrier_label_variants": 2452,
+  "weight_rows_in_pounds": 1021,
+  "volume_rows_in_litres": 789,
+  "ship_date_dmy_rows": 1907,
+  "order_date_slash_rows": 1496,
+  "unparseable_dates": 65,
+  "impossible_values": 43,
+  "freight_cost_missing": 2605,
+  "weight_kg_missing": 541,
+  "volume_m3_missing": 379,
+  "priority_missing": 278,
+  "promised_days_missing": 148,
+  "destination_missing": 100,
+  "carrier_unknown": 191,
+  "duplicate_rows_added": 600,
+  "missing_cell_share": 0.0045
+}

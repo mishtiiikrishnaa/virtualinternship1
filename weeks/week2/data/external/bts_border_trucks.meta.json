@@ -1,0 +1,30 @@
+{
+  "dataset": "Border Crossing Entry Data",
+  "dataset_id": "keg4-3bc2",
+  "publisher": "U.S. Bureau of Transportation Statistics (BTS); data collected by U.S. Customs and Border Protection (CBP)",
+  "landing_page": "https://data.transportation.gov/d/keg4-3bc2",
+  "api_endpoint": "https://data.transportation.gov/resource/keg4-3bc2.json",
+  "licence": "Public Domain (Socrata licenceId PUBLIC_DOMAIN)",
+  "attribution": "U.S. Department of Homeland Security, Customs and Border Protection",
+  "measure_filter": "Trucks",
+  "rows": 38567,
+  "columns": [
+    "port_name",
+    "state",
+    "port_code",
+    "border",
+    "date",
+    "measure",
+    "value",
+    "latitude",
+    "longitude"
+  ],
+  "date_min": "1996-01-01",
+  "date_max": "2026-09-01",
+  "ports": 115,
+  "states": 14,
+  "accessed_utc": "2026-11-02T14:12:01Z",
+  "sha256_gz": "b6e3b791048ce58a4c2ab2fbfe74eb07d49dc4aa943424b7d7a0209c2f73de67",
+  "bytes_gz": 234200,
+  "retrieved_by": "src/fetch_real_data.py"
+}

@@ -1,0 +1,237 @@
+{
+  "transit_by_mode": {
+    "kruskal_h": 40707.2158,
+    "df": 3,
+    "p": 0.0,
+    "epsilon_squared": 0.8334,
+    "n": 48847,
+    "group_medians": {
+      "Air": 3.0,
+      "Road": 6.0,
+      "Rail": 9.0,
+      "Sea": 24.0
+    },
+    "pairwise": [
+      {
+        "a": "Air",
+        "b": "Road",
+        "u": 21217621.0,
+        "p": 0.0,
+        "median_a": 3.0,
+        "median_b": 6.0,
+        "delta_days": 3.0,
+        "rank_biserial": -0.7543,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      {
+        "a": "Air",
+        "b": "Rail",
+        "u": 705868.0,
+        "p": 0.0,
+        "median_a": 3.0,
+        "median_b": 9.0,
+        "delta_days": 6.0,
+        "rank_biserial": -0.9728,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      {
+        "a": "Air",
+        "b": "Sea",
+        "u": 566336.0,
+        "p": 0.0,
+        "median_a": 3.0,
+        "median_b": 24.0,
+        "delta_days": 21.0,
+        "rank_biserial": -0.995,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      {
+        "a": "Road",
+        "b": "Rail",
+        "u": 8394417.5,
+        "p": 0.0,
+        "median_a": 6.0,
+        "median_b": 9.0,
+        "delta_days": 3.0,
+        "rank_biserial": -0.7181,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      {
+        "a": "Road",
+        "b": "Sea",
+        "u": 673951.5,
+        "p": 0.0,
+        "median_a": 6.0,
+        "median_b": 24.0,
+        "delta_days": 18.0,
+        "rank_biserial": -0.9948,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      {
+        "a": "Rail",
+        "b": "Sea",
+        "u": 388157.0,
+        "p": 0.0,
+        "median_a": 9.0,
+        "median_b": 24.0,
+        "delta_days": 15.0,
+        "rank_biserial": -0.99,
+        "p_holm": 0.0,
+        "significant": true
+      }
+    ],
+    "anova_log_f": 111899.4532,
+    "anova_log_p": 0.0,
+    "anova_eta_squared": 0.873
+  },
+  "on_time_by_carrier": {
+    "chi2": 4023.43,
+    "dof": 12,
+    "p": 0.0,
+    "cramers_v": 0.287,
+    "best_carrier": "Ironline Rail",
+    "worst_carrier": "Northwind Cargo",
+    "best_rate": 0.9071,
+    "worst_rate": 0.5941,
+    "gap_pp": 31.3,
+    "table": {
+      "0.0": {
+        "Atlas Freight": 380,
+        "Beacon Logistics": 589,
+        "Cobalt Lines": 1756,
+        "Dunmore Cargo": 244,
+        "Eastwind Shipping": 633,
+        "Falcon Air Cargo": 342,
+        "Granite Haulage": 211,
+        "Harborlink": 628,
+        "Ironline Rail": 110,
+        "Jetstream Express": 381,
+        "Keystone Freight": 305,
+        "Northwind Cargo": 2785,
+        "Unassigned": 24
+      },
+      "1.0": {
+        "Atlas Freight": 3169,
+        "Beacon Logistics": 4911,
+        "Cobalt Lines": 4918,
+        "Dunmore Cargo": 2167,
+        "Eastwind Shipping": 5095,
+        "Falcon Air Cargo": 2994,
+        "Granite Haulage": 1613,
+        "Harborlink": 4772,
+        "Ironline Rail": 1074,
+        "Jetstream Express": 3168,
+        "Keystone Freight": 2337,
+        "Northwind Cargo": 4077,
+        "Unassigned": 164
+      }
+    }
+  },
+  "on_time_by_mode": {
+    "chi2": 577.81,
+    "dof": 3,
+    "p": 0.0,
+    "cramers_v": 0.1088
+  },
+  "priority": {
+    "kruskal_h": 241.3282,
+    "p": 0.0,
+    "median_high": 7.0,
+    "median_low": 8.0,
+    "mean_high": 11.5425,
+    "mean_low": 13.772,
+    "median_standard": 8.0,
+    "carrier_counts": {
+      "Atlas Freight": {
+        "on_time": 3169,
+        "late": 380
+      },
+      "Beacon Logistics": {
+        "on_time": 4911,
+        "late": 589
+      },
+      "Cobalt Lines": {
+        "on_time": 4918,
+        "late": 1756
+      },
+      "Dunmore Cargo": {
+        "on_time": 2167,
+        "late": 244
+      },
+      "Eastwind Shipping": {
+        "on_time": 5095,
+        "late": 633
+      },
+      "Falcon Air Cargo": {
+        "on_time": 2994,
+        "late": 342
+      },
+      "Granite Haulage": {
+        "on_time": 1613,
+        "late": 211
+      },
+      "Harborlink": {
+        "on_time": 4772,
+        "late": 628
+      },
+      "Ironline Rail": {
+        "on_time": 1074,
+        "late": 110
+      },
+      "Jetstream Express": {
+        "on_time": 3168,
+        "late": 381
+      },
+      "Keystone Freight": {
+        "on_time": 2337,
+        "late": 305
+      },
+      "Northwind Cargo": {
+        "on_time": 4077,
+        "late": 2785
+      },
+      "Unassigned": {
+        "on_time": 164,
+        "late": 24
+      }
+    },
+    "mannwhitney_u": 33751314.0,
+    "mannwhitney_p": 0.0
+  },
+  "disruption": {
+    "mannwhitney_u": 46079673.5,
+    "p": 0.0,
+    "feb_median": 9.0,
+    "rest_median": 7.0
+  },
+  "cost_per_kg_by_mode": {
+    "kruskal_h": 35350.405,
+    "p": 0.0
+  },
+  "correction": {
+    "family_size": 12,
+    "method": "Holm-Bonferroni on mode pairs; family-wise alpha 0.05 elsewhere",
+    "alpha": 0.05,
+    "bonferroni_alpha": 0.004167
+  },
+  "carrier_rates": {
+    "Atlas Freight": 0.8929,
+    "Beacon Logistics": 0.8929,
+    "Cobalt Lines": 0.7369,
+    "Dunmore Cargo": 0.8988,
+    "Eastwind Shipping": 0.8895,
+    "Falcon Air Cargo": 0.8975,
+    "Granite Haulage": 0.8843,
+    "Harborlink": 0.8837,
+    "Ironline Rail": 0.9071,
+    "Jetstream Express": 0.8926,
+    "Keystone Freight": 0.8846,
+    "Northwind Cargo": 0.5941,
+    "Unassigned": 0.8723
+  }
+}

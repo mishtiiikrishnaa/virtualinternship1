@@ -1,0 +1,191 @@
+{
+  "model": {
+    "label": "mode fixed effects",
+    "n": 47310,
+    "r2": 0.9537,
+    "adj_r2": 0.9537,
+    "weight_elasticity": 0.8009,
+    "weight_se": 0.0014,
+    "weight_ci": [
+      0.7982,
+      0.8036
+    ],
+    "distance_elasticity": 1.0011,
+    "distance_se": 0.003,
+    "distance_ci": [
+      0.9952,
+      1.0069
+    ],
+    "intercept": -4.5602,
+    "mode_effects": {
+      "Rail": -1.5192,
+      "Road": -0.9546,
+      "Sea": -1.9786
+    },
+    "resid_sd": 0.3123,
+    "resid_skew": 0.8415,
+    "breusch_pagan_p": 0.0,
+    "jarque_bera_p": 0.0,
+    "doubling_weight_factor": 1.7422
+  },
+  "pooled": {
+    "label": "pooled, no mode term",
+    "n": 47310,
+    "r2": 0.797,
+    "adj_r2": 0.797,
+    "weight_elasticity": 0.474,
+    "weight_se": 0.002,
+    "weight_ci": [
+      0.47,
+      0.4779
+    ],
+    "distance_elasticity": 0.8972,
+    "distance_se": 0.0028,
+    "distance_ci": [
+      0.8918,
+      0.9026
+    ],
+    "intercept": -2.7951,
+    "mode_effects": {},
+    "resid_sd": 0.6539,
+    "resid_skew": 0.4834,
+    "breusch_pagan_p": 0.0,
+    "jarque_bera_p": 0.0,
+    "doubling_weight_factor": 1.3889
+  },
+  "per_mode_fit": {
+    "Air": {
+      "weight_elasticity": 0.8051,
+      "distance_elasticity": 1.0048,
+      "r2": 0.9236,
+      "n": 11648
+    },
+    "Rail": {
+      "weight_elasticity": 0.8131,
+      "distance_elasticity": 1.0048,
+      "r2": 0.9217,
+      "n": 4283
+    },
+    "Road": {
+      "weight_elasticity": 0.797,
+      "distance_elasticity": 0.9975,
+      "r2": 0.9091,
+      "n": 14193
+    },
+    "Sea": {
+      "weight_elasticity": 0.7983,
+      "distance_elasticity": 0.991,
+      "r2": 0.8847,
+      "n": 17186
+    }
+  },
+  "sensitivity": {
+    "label": "top 0.5% of costs excluded",
+    "n": 47073,
+    "r2": 0.9565,
+    "adj_r2": 0.9564,
+    "weight_elasticity": 0.7963,
+    "weight_se": 0.0013,
+    "weight_ci": [
+      0.7937,
+      0.7989
+    ],
+    "distance_elasticity": 0.9984,
+    "distance_se": 0.0029,
+    "distance_ci": [
+      0.9928,
+      1.004
+    ],
+    "intercept": -4.5182,
+    "mode_effects": {
+      "Rail": -1.5068,
+      "Road": -0.9507,
+      "Sea": -1.9695
+    },
+    "resid_sd": 0.2988,
+    "resid_skew": 0.2975,
+    "breusch_pagan_p": 0.0,
+    "jarque_bera_p": 0.0,
+    "doubling_weight_factor": 1.7366
+  },
+  "sensitivity_flagged": {
+    "label": "residual-flagged rows excluded",
+    "n": 46318,
+    "r2": 0.9804,
+    "adj_r2": 0.9804,
+    "weight_elasticity": 0.8209,
+    "weight_se": 0.0009,
+    "weight_ci": [
+      0.8191,
+      0.8226
+    ],
+    "distance_elasticity": 1.0018,
+    "distance_se": 0.0019,
+    "distance_ci": [
+      0.998,
+      1.0057
+    ],
+    "intercept": -4.6699,
+    "mode_effects": {
+      "Rail": -1.5775,
+      "Road": -0.9627,
+      "Sea": -2.0234
+    },
+    "resid_sd": 0.2012,
+    "resid_skew": 0.0419,
+    "breusch_pagan_p": 0.130792449736,
+    "jarque_bera_p": 5.0447511e-05,
+    "doubling_weight_factor": 1.7665
+  },
+  "by_mode": {
+    "Air": {
+      "median_cost_per_kg": 46.187,
+      "mean_cost_per_kg": 49.2583,
+      "p10": 15.9385,
+      "p90": 73.6742,
+      "iqr": 25.7072,
+      "median_cost_usd": 5151.05,
+      "median_cost_per_km": 0.4886,
+      "cost_share_pct": 30.3,
+      "shipment_share_pct": 25.2
+    },
+    "Rail": {
+      "median_cost_per_kg": 0.9004,
+      "mean_cost_per_kg": 1.1231,
+      "p10": 0.4267,
+      "p90": 2.0015,
+      "iqr": 0.862,
+      "median_cost_usd": 2173.69,
+      "median_cost_per_km": 1.1579,
+      "cost_share_pct": 5.2,
+      "shipment_share_pct": 8.7
+    },
+    "Road": {
+      "median_cost_per_kg": 2.3961,
+      "mean_cost_per_kg": 3.0025,
+      "p10": 1.1223,
+      "p90": 5.3951,
+      "iqr": 2.3276,
+      "median_cost_usd": 627.49,
+      "median_cost_per_km": 0.3458,
+      "cost_share_pct": 4.9,
+      "shipment_share_pct": 28.8
+    },
+    "Sea": {
+      "median_cost_per_kg": 5.98,
+      "mean_cost_per_kg": 6.5869,
+      "p10": 3.6109,
+      "p90": 9.2689,
+      "iqr": 2.8825,
+      "median_cost_usd": 7078.195,
+      "median_cost_per_km": 0.4257,
+      "cost_share_pct": 59.6,
+      "shipment_share_pct": 37.4
+    }
+  },
+  "total_cost_usd": 319321700.0,
+  "median_cost_usd": 3323.32,
+  "cost_per_kg_overall": 5.2816,
+  "air_to_sea_ratio": 7.7,
+  "air_to_rail_ratio": 51.3
+}

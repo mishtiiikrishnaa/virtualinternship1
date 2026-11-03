@@ -1,0 +1,219 @@
+{
+  "rows_raw": 50600,
+  "cols_raw": 18,
+  "duplicates_removed": 600,
+  "unparseable_date_strings": 65,
+  "rows_dropped_unparseable": 65,
+  "impossible_values_set_missing": 40,
+  "impossible_values_detail": {
+    "weight_kg": 15,
+    "volume_m3": 0,
+    "distance_km": 8,
+    "freight_cost_usd": 17,
+    "promised_days": 0
+  },
+  "mode_labels_rewritten": 2706,
+  "weight_rows_converted_from_lb": 1020,
+  "volume_rows_converted_from_litres": 789,
+  "destination_recovered_from_lane": 100,
+  "missing_share_before": 0.0043,
+  "promised_imputed_rows": 148,
+  "weight_imputed_rows": 556,
+  "volume_imputed_rows": 380,
+  "freight_cost_left_missing_rows": 2619,
+  "on_time_eligible_rows": 48847,
+  "cost_outliers_flagged": 3533,
+  "rows_clean": 49935,
+  "cols_clean": 35,
+  "missing_share_after": 0.0019,
+  "missing_by_column": {
+    "shipment_id": {
+      "count": 0,
+      "share": 0.0
+    },
+    "order_date": {
+      "count": 0,
+      "share": 0.0
+    },
+    "ship_date": {
+      "count": 0,
+      "share": 0.0
+    },
+    "delivery_date": {
+      "count": 1088,
+      "share": 0.0218
+    },
+    "origin": {
+      "count": 0,
+      "share": 0.0
+    },
+    "destination": {
+      "count": 0,
+      "share": 0.0
+    },
+    "lane": {
+      "count": 0,
+      "share": 0.0
+    },
+    "mode": {
+      "count": 0,
+      "share": 0.0
+    },
+    "carrier": {
+      "count": 0,
+      "share": 0.0
+    },
+    "weight_kg": {
+      "count": 0,
+      "share": 0.0
+    },
+    "volume_m3": {
+      "count": 0,
+      "share": 0.0
+    },
+    "distance_km": {
+      "count": 8,
+      "share": 0.0002
+    },
+    "freight_cost_usd": {
+      "count": 2619,
+      "share": 0.0524
+    },
+    "promised_days": {
+      "count": 0,
+      "share": 0.0
+    },
+    "status": {
+      "count": 0,
+      "share": 0.0
+    },
+    "priority": {
+      "count": 0,
+      "share": 0.0
+    },
+    "weight_unit": {
+      "count": 0,
+      "share": 0.0
+    },
+    "volume_unit": {
+      "count": 0,
+      "share": 0.0
+    },
+    "weight_imputed": {
+      "count": 0,
+      "share": 0.0
+    },
+    "cost_missing": {
+      "count": 0,
+      "share": 0.0
+    },
+    "transit_days": {
+      "count": 1088,
+      "share": 0.0218
+    },
+    "delay_days": {
+      "count": 1088,
+      "share": 0.0218
+    },
+    "on_time": {
+      "count": 1088,
+      "share": 0.0218
+    },
+    "cost_per_kg": {
+      "count": 2619,
+      "share": 0.0524
+    },
+    "cost_per_km": {
+      "count": 2625,
+      "share": 0.0526
+    },
+    "speed_km_per_day": {
+      "count": 1095,
+      "share": 0.0219
+    },
+    "month": {
+      "count": 0,
+      "share": 0.0
+    },
+    "month_start": {
+      "count": 0,
+      "share": 0.0
+    },
+    "quarter": {
+      "count": 0,
+      "share": 0.0
+    },
+    "year": {
+      "count": 0,
+      "share": 0.0
+    },
+    "weekday": {
+      "count": 0,
+      "share": 0.0
+    },
+    "week": {
+      "count": 0,
+      "share": 0.0
+    },
+    "is_q4": {
+      "count": 0,
+      "share": 0.0
+    },
+    "lane_type": {
+      "count": 0,
+      "share": 0.0
+    },
+    "outlier_cost_iqr": {
+      "count": 0,
+      "share": 0.0
+    }
+  },
+  "steps": [
+    {
+      "step": "0. Raw extract",
+      "rows_in": 50600,
+      "rows_out": 50600,
+      "removed": 0,
+      "detail": "18 columns, mixed formats and units"
+    },
+    {
+      "step": "1. Remove exact duplicate rows",
+      "rows_in": 50600,
+      "rows_out": 50000,
+      "removed": 600,
+      "detail": "same shipment_id exported twice"
+    },
+    {
+      "step": "2. Parse dates, drop unreadable rows",
+      "rows_in": 50000,
+      "rows_out": 49935,
+      "removed": 65,
+      "detail": "65 strings matched no accepted format"
+    },
+    {
+      "step": "3. Void impossible values",
+      "rows_in": 49935,
+      "rows_out": 49935,
+      "removed": 0,
+      "detail": "negative weights, zero distance, negative cost set to missing"
+    },
+    {
+      "step": "4. Standardise labels and units",
+      "rows_in": 49935,
+      "rows_out": 49935,
+      "removed": 0,
+      "detail": "2706 mode labels; 1020 lb rows"
+    },
+    {
+      "step": "5-6. Impute where defensible",
+      "rows_in": 49935,
+      "rows_out": 49935,
+      "removed": 0,
+      "detail": "weight/volume/promise by mode median; cost kept missing"
+    }
+  ],
+  "date_min": "2024-01-01",
+  "date_max": "2025-12-31",
+  "output_sha256": "0791ccab4a059a2e21b91845efd8f3b4a6dc688aaffe7bdc17aff2eeb5f0cfc2",
+  "output_bytes": 14539994
+}

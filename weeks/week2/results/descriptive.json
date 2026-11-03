@@ -1,0 +1,407 @@
+{
+  "variables": {
+    "transit_days": {
+      "n": 48847,
+      "mean": 12.6736,
+      "median": 8.0,
+      "std": 10.4,
+      "min": 1.0,
+      "p25": 4.0,
+      "p75": 21.0,
+      "p90": 28.0,
+      "max": 75.0,
+      "iqr": 17.0,
+      "cv": 0.8206,
+      "skew": 0.9407,
+      "kurtosis": -0.0198,
+      "unit": "days"
+    },
+    "freight_cost_usd": {
+      "n": 47316,
+      "mean": 6748.7045,
+      "median": 3323.32,
+      "std": 12450.2413,
+      "min": 7.07,
+      "p25": 992.0425,
+      "p75": 8141.2425,
+      "p90": 15866.86,
+      "max": 880988.04,
+      "iqr": 7149.2,
+      "cv": 1.8448,
+      "skew": 15.5508,
+      "kurtosis": 688.2525,
+      "unit": "USD"
+    },
+    "weight_kg": {
+      "n": 49935,
+      "mean": 1369.3233,
+      "median": 453.14,
+      "std": 3456.9382,
+      "min": 1.44,
+      "p25": 155.265,
+      "p75": 1358.93,
+      "p90": 3267.96,
+      "max": 229263.07,
+      "iqr": 1203.665,
+      "cv": 2.5246,
+      "skew": 18.3644,
+      "kurtosis": 735.2223,
+      "unit": "kg"
+    },
+    "volume_m3": {
+      "n": 49935,
+      "mean": 8.5406,
+      "median": 2.807,
+      "std": 19.8872,
+      "min": 0.01,
+      "p25": 0.936,
+      "p75": 8.469,
+      "p90": 20.5896,
+      "max": 857.785,
+      "iqr": 7.533,
+      "cv": 2.3285,
+      "skew": 11.7061,
+      "kurtosis": 284.2796,
+      "unit": "m3"
+    },
+    "distance_km": {
+      "n": 49927,
+      "mean": 9903.1471,
+      "median": 11131.3,
+      "std": 7133.6565,
+      "min": 404.9,
+      "p25": 2328.05,
+      "p75": 16083.45,
+      "p90": 19229.64,
+      "max": 29160.6,
+      "iqr": 13755.4,
+      "cv": 0.7203,
+      "skew": 0.0945,
+      "kurtosis": -1.4245,
+      "unit": "km"
+    },
+    "cost_per_kg": {
+      "n": 47316,
+      "mean": 15.5232,
+      "median": 5.2816,
+      "std": 29.2946,
+      "min": 0.0382,
+      "p25": 2.4575,
+      "p75": 10.3409,
+      "p90": 50.8626,
+      "max": 1059.7704,
+      "iqr": 7.8833,
+      "cv": 1.8871,
+      "skew": 10.5719,
+      "kurtosis": 233.7986,
+      "unit": "USD/kg"
+    },
+    "cost_per_km": {
+      "n": 47310,
+      "mean": 0.7464,
+      "median": 0.4485,
+      "std": 1.2791,
+      "min": 0.0053,
+      "p25": 0.2378,
+      "p75": 0.8446,
+      "p90": 1.5443,
+      "max": 91.782,
+      "iqr": 0.6068,
+      "cv": 1.7137,
+      "skew": 21.2723,
+      "kurtosis": 1017.6101,
+      "unit": "USD/km"
+    },
+    "promised_days": {
+      "n": 49935,
+      "mean": 15.6456,
+      "median": 7.0,
+      "std": 12.0409,
+      "min": 3.0,
+      "p25": 5.0,
+      "p75": 31.0,
+      "p90": 31.0,
+      "max": 32.0,
+      "iqr": 26.0,
+      "cv": 0.7696,
+      "skew": 0.4384,
+      "kurtosis": -1.7118,
+      "unit": "days"
+    },
+    "delay_days": {
+      "n": 48847,
+      "mean": -2.9827,
+      "median": -2.0,
+      "std": 5.2547,
+      "min": -22.0,
+      "p25": -5.0,
+      "p75": 0.0,
+      "p90": 1.0,
+      "max": 44.0,
+      "iqr": 5.0,
+      "cv": -1.7617,
+      "skew": 0.0553,
+      "kurtosis": 4.9242,
+      "unit": "days"
+    }
+  },
+  "by_mode": {
+    "Air": {
+      "shipments": 12574,
+      "share": 0.2518,
+      "median_transit_days": 3.0,
+      "mean_transit_days": 3.5042,
+      "p90_transit_days": 5.0,
+      "median_promised_days": 4.0,
+      "on_time_rate": 0.7921,
+      "median_weight_kg": 121.68,
+      "median_distance_km": 11990.4,
+      "median_cost_usd": 5151.05,
+      "median_cost_per_kg": 46.187,
+      "mean_delay_days": -0.4967,
+      "costed_shipments": 11650
+    },
+    "Rail": {
+      "shipments": 4333,
+      "share": 0.0868,
+      "median_transit_days": 9.0,
+      "mean_transit_days": 9.2518,
+      "p90_transit_days": 12.0,
+      "median_promised_days": 12.0,
+      "on_time_rate": 0.9161,
+      "median_weight_kg": 2375.12,
+      "median_distance_km": 1626.0,
+      "median_cost_usd": 2173.69,
+      "median_cost_per_kg": 0.9004,
+      "mean_delay_days": -2.7468,
+      "costed_shipments": 4283
+    },
+    "Road": {
+      "shipments": 14373,
+      "share": 0.2878,
+      "median_transit_days": 6.0,
+      "mean_transit_days": 6.1766,
+      "p90_transit_days": 9.0,
+      "median_promised_days": 7.0,
+      "on_time_rate": 0.7939,
+      "median_weight_kg": 256.41,
+      "median_distance_km": 1578.9,
+      "median_cost_usd": 627.49,
+      "median_cost_per_kg": 2.3961,
+      "mean_delay_days": -0.8216,
+      "costed_shipments": 14197
+    },
+    "Sea": {
+      "shipments": 18655,
+      "share": 0.3736,
+      "median_transit_days": 24.0,
+      "mean_transit_days": 24.6316,
+      "p90_transit_days": 33.0,
+      "median_promised_days": 31.0,
+      "on_time_rate": 0.8587,
+      "median_weight_kg": 1205.4,
+      "median_distance_km": 17285.65,
+      "median_cost_usd": 7078.195,
+      "median_cost_per_kg": 5.98,
+      "mean_delay_days": -6.3721,
+      "costed_shipments": 17186
+    }
+  },
+  "by_carrier": {
+    "Atlas Freight": {
+      "shipments": 3616,
+      "modes": [
+        "Rail",
+        "Road"
+      ],
+      "median_transit_days": 6.0,
+      "on_time_rate": 0.8929,
+      "ci_low": 0.8823,
+      "ci_high": 0.9027,
+      "median_cost_per_kg": 1.7069,
+      "mean_delay_days": -1.7616
+    },
+    "Beacon Logistics": {
+      "shipments": 5623,
+      "modes": [
+        "Air",
+        "Road"
+      ],
+      "median_transit_days": 4.0,
+      "on_time_rate": 0.8929,
+      "ci_low": 0.8845,
+      "ci_high": 0.9008,
+      "median_cost_per_kg": 25.7113,
+      "mean_delay_days": -1.058
+    },
+    "Cobalt Lines": {
+      "shipments": 6815,
+      "modes": [
+        "Road",
+        "Sea"
+      ],
+      "median_transit_days": 22.0,
+      "on_time_rate": 0.7369,
+      "ci_low": 0.7262,
+      "ci_high": 0.7473,
+      "median_cost_per_kg": 5.2567,
+      "mean_delay_days": -3.6677
+    },
+    "Dunmore Cargo": {
+      "shipments": 2460,
+      "modes": [
+        "Rail",
+        "Road"
+      ],
+      "median_transit_days": 6.0,
+      "on_time_rate": 0.8988,
+      "ci_low": 0.8861,
+      "ci_high": 0.9102,
+      "median_cost_per_kg": 1.7249,
+      "mean_delay_days": -1.8905
+    },
+    "Eastwind Shipping": {
+      "shipments": 5854,
+      "modes": [
+        "Sea"
+      ],
+      "median_transit_days": 23.0,
+      "on_time_rate": 0.8895,
+      "ci_low": 0.8811,
+      "ci_high": 0.8973,
+      "median_cost_per_kg": 5.9157,
+      "mean_delay_days": -7.3628
+    },
+    "Falcon Air Cargo": {
+      "shipments": 3411,
+      "modes": [
+        "Air"
+      ],
+      "median_transit_days": 3.0,
+      "on_time_rate": 0.8975,
+      "ci_low": 0.8867,
+      "ci_high": 0.9073,
+      "median_cost_per_kg": 47.7249,
+      "mean_delay_days": -0.8597
+    },
+    "Granite Haulage": {
+      "shipments": 1862,
+      "modes": [
+        "Road"
+      ],
+      "median_transit_days": 5.0,
+      "on_time_rate": 0.8843,
+      "ci_low": 0.8688,
+      "ci_high": 0.8982,
+      "median_cost_per_kg": 2.3668,
+      "mean_delay_days": -1.398
+    },
+    "Harborlink": {
+      "shipments": 5507,
+      "modes": [
+        "Road",
+        "Sea"
+      ],
+      "median_transit_days": 20.0,
+      "on_time_rate": 0.8837,
+      "ci_low": 0.8749,
+      "ci_high": 0.892,
+      "median_cost_per_kg": 5.1484,
+      "mean_delay_days": -5.7004
+    },
+    "Ironline Rail": {
+      "shipments": 1218,
+      "modes": [
+        "Rail"
+      ],
+      "median_transit_days": 9.0,
+      "on_time_rate": 0.9071,
+      "ci_low": 0.8892,
+      "ci_high": 0.9223,
+      "median_cost_per_kg": 0.9527,
+      "mean_delay_days": -2.6562
+    },
+    "Jetstream Express": {
+      "shipments": 3645,
+      "modes": [
+        "Air"
+      ],
+      "median_transit_days": 3.0,
+      "on_time_rate": 0.8926,
+      "ci_low": 0.882,
+      "ci_high": 0.9024,
+      "median_cost_per_kg": 44.9415,
+      "mean_delay_days": -0.8394
+    },
+    "Keystone Freight": {
+      "shipments": 2702,
+      "modes": [
+        "Rail",
+        "Road"
+      ],
+      "median_transit_days": 6.0,
+      "on_time_rate": 0.8846,
+      "ci_low": 0.8718,
+      "ci_high": 0.8962,
+      "median_cost_per_kg": 1.8284,
+      "mean_delay_days": -1.7721
+    },
+    "Northwind Cargo": {
+      "shipments": 7031,
+      "modes": [
+        "Air",
+        "Road",
+        "Sea"
+      ],
+      "median_transit_days": 17.0,
+      "on_time_rate": 0.5941,
+      "ci_low": 0.5825,
+      "ci_high": 0.6057,
+      "median_cost_per_kg": 6.5812,
+      "mean_delay_days": -2.1352
+    },
+    "Unassigned": {
+      "shipments": 191,
+      "modes": [
+        "Air",
+        "Rail",
+        "Road",
+        "Sea"
+      ],
+      "median_transit_days": 8.0,
+      "on_time_rate": 0.8723,
+      "ci_low": 0.8171,
+      "ci_high": 0.9127,
+      "median_cost_per_kg": 5.125,
+      "mean_delay_days": -4.0213
+    }
+  },
+  "by_priority": {
+    "High": {
+      "shipments": 11017,
+      "median_transit_days": 7.0,
+      "on_time_rate": 0.8986
+    },
+    "Low": {
+      "shipments": 7338,
+      "median_transit_days": 8.0,
+      "on_time_rate": 0.728
+    },
+    "Standard": {
+      "shipments": 31302,
+      "median_transit_days": 8.0,
+      "on_time_rate": 0.8272
+    },
+    "Unspecified": {
+      "shipments": 278,
+      "median_transit_days": 10.0,
+      "on_time_rate": 0.8162
+    }
+  },
+  "log_cost": {
+    "mean": 7.9314,
+    "std": 1.4512,
+    "skew": -0.3153,
+    "kurtosis": -0.3483
+  }
+}

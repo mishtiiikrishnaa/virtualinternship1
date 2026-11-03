@@ -1,0 +1,91 @@
+{
+  "seed": 42,
+  "rows_generated": 50000,
+  "window": [
+    "2024-01-01",
+    "2025-12-31"
+  ],
+  "q4_multiplier": 1.35,
+  "q4_months": [
+    10,
+    11,
+    12
+  ],
+  "mode_base_days": {
+    "Air": 0.9,
+    "Road": 4.4,
+    "Rail": 8.2,
+    "Sea": 17.5
+  },
+  "weak_carriers": {
+    "Northwind Cargo": 2.2,
+    "Cobalt Lines": 2.1
+  },
+  "disruption_month": "2025-02",
+  "disruption_penalty_days": {
+    "Sea": 2.6,
+    "Road": 1.4,
+    "Rail": 0.7,
+    "Air": 0.3
+  },
+  "cost_weight_elasticity": 0.82,
+  "cost_distance_elasticity": 1.0,
+  "outlier_share": 0.014,
+  "duplicate_rows": 600,
+  "missing_share_target": 0.045,
+  "realised": {
+    "on_time_rate": 0.828341272924291,
+    "median_transit_days_by_mode": {
+      "Air": 3.0,
+      "Rail": 9.0,
+      "Road": 6.0,
+      "Sea": 24.0
+    },
+    "on_time_rate_by_carrier": {
+      "Atlas Freight": 0.8932,
+      "Beacon Logistics": 0.8927,
+      "Cobalt Lines": 0.7373,
+      "Dunmore Cargo": 0.8986,
+      "Eastwind Shipping": 0.8901,
+      "Falcon Air Cargo": 0.8977,
+      "Granite Haulage": 0.8845,
+      "Harborlink": 0.8836,
+      "Ironline Rail": 0.9075,
+      "Jetstream Express": 0.8919,
+      "Keystone Freight": 0.8852,
+      "Northwind Cargo": 0.5947
+    },
+    "median_cost_per_kg_by_mode": {
+      "Air": 46.222,
+      "Rail": 0.9,
+      "Road": 2.398,
+      "Sea": 5.978
+    },
+    "monthly_rows": {
+      "2024-01": 1688,
+      "2024-02": 1762,
+      "2024-03": 1911,
+      "2024-04": 1965,
+      "2024-05": 2005,
+      "2024-06": 1932,
+      "2024-07": 1911,
+      "2024-08": 1893,
+      "2024-09": 2039,
+      "2024-10": 2560,
+      "2024-11": 2683,
+      "2024-12": 2465,
+      "2025-01": 1756,
+      "2025-02": 1784,
+      "2025-03": 1941,
+      "2025-04": 1951,
+      "2025-05": 2004,
+      "2025-06": 1974,
+      "2025-07": 1910,
+      "2025-08": 2036,
+      "2025-09": 2034,
+      "2025-10": 2638,
+      "2025-11": 2633,
+      "2025-12": 2525
+    }
+  }
+}
