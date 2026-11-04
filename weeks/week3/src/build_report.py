@@ -86,10 +86,10 @@ def title_block(r):
     runner.font.color.rgb = BLUE
 
     for text, size, colour in [
-        ("Mishti Krishna", 13, RGBColor(0x1A, 0x1A, 0x1A)),
+        ("Meghana Krishnakumar Nair", 13, RGBColor(0x1A, 0x1A, 0x1A)),
         ("Data analytics intern  ·  4 November 2026", 10, GREY),
         ("Repository: github.com/mishtiiikrishnaa/virtualinternship1  ·  weeks/week3", 9, GREY),
-        ("Author (report): Mishti Krishna", 9, GREY),
+        ("Author (report): Meghana Krishnakumar Nair", 9, GREY),
     ]:
         para = r.doc.add_paragraph()
         para.paragraph_format.space_after = Pt(1)
@@ -728,7 +728,7 @@ def conclusion(r):
         "triage threshold with finance."
     )
     r.p(
-        "Mishti Krishna"
+        "Meghana Krishnakumar Nair"
     )
 
 
@@ -819,7 +819,7 @@ def main():
     r.doc.core_properties.title = (
         "Predictive Modelling and Forecasting for Logistics Optimization"
     )
-    r.doc.core_properties.author = "Mishti Krishna"
+    r.doc.core_properties.author = "Meghana Krishnakumar Nair"
     r.doc.core_properties.subject = "Week 3 – predictive modelling and forecasting"
     r.doc.core_properties.keywords = ("logistics, forecasting, classification, "
                                       "python, ridge, gradient boosting")

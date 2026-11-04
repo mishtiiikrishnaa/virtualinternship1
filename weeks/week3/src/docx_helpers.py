@@ -201,7 +201,7 @@ class Report:
         footer = self.doc.sections[0].footer
         paragraph = footer.paragraphs[0]
         paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        run = paragraph.add_run("Mishti Krishna  |  Week 3  |  page ")
+        run = paragraph.add_run("Meghana Krishnakumar Nair  |  Week 3  |  page ")
         run.font.size = Pt(8)
         run.font.color.rgb = GREY
         _field(paragraph, "PAGE")
