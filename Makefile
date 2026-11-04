@@ -17,10 +17,11 @@ week2:
 	cd weeks/week2 && $(PYTHON) -m src.audit
 
 week3:
-	@echo "week 3 has not started yet — see weeks/week3/README.md"
+	$(MAKE) -C weeks/week3 all
 
 week4:
 	@echo "week 4 has not started yet — see weeks/week4/README.md"
 
 test:
 	cd weeks/week1 && $(PYTHON) -m pytest -q
+	cd weeks/week3 && $(PYTHON) -m pytest -q

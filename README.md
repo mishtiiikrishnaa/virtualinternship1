@@ -14,8 +14,8 @@ history for each week stays legible.
 |---|---|---|---|
 | 1 | Strategic data collection and preprocessing blueprint | submitted | [`weeks/week1`](weeks/week1) |
 | 2 | Exploratory data analysis and visualization | submitted | [`weeks/week2`](weeks/week2) |
-| 3 | Geospatial and temporal enrichment | not started | [`weeks/week3`](weeks/week3) |
-| 4 | Quality automation, scheduled runs and reporting | not started | [`weeks/week4`](weeks/week4) |
+| 3 | Predictive modelling and forecasting | submitted (in this commit) | [`weeks/week3`](weeks/week3) |
+| 4 | not started | not started | [`weeks/week4`](weeks/week4) |
 
 Week 2 onward build on the same schema contract and entry point introduced in
 week 1, so the structure is deliberately shallow: one folder per week, no
@@ -55,6 +55,20 @@ python -m src.build_report    # rebuild the .docx (needs pandoc + libreoffice)
 Or from the repository root: `make week1` or `make week2`. Week 2 needs a
 Chrome build once for plotly's static export (`plotly_get_chrome -y`); its PDF
 is rendered with LibreOffice and compressed with Ghostscript.
+
+## Running week 3
+
+```bash
+cd weeks/week3
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+python -m src.run_pipeline    # build features, models, figures, results, report
+python -m pytest -q           # 13 tests
+python -m src.build_report     # rebuild the .docx (no pandoc; LibreOffice only for the optional PDF proof)
+```
+
+Or from the repository root: `make week3`.
 
 ## Why one repository
 
