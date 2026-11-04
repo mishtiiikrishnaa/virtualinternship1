@@ -5,7 +5,6 @@
 [![forks][forks-shield]][forks-url]
 [![stargazers][stars-shield]][stars-url]
 [![issues][issues-shield]][issues-url]
-[![linkedin][linkedin-shield]][linkedin-url]
 
 <!-- project logo -->
 <br />
