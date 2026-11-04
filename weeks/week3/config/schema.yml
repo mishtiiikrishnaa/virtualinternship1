@@ -1,0 +1,41 @@
+# Modelling schema contract for week 3.
+# Built from the week 1 cleaned extract (data/processed/shipments_clean.csv).
+# One row per shipment; derived modelling columns are added by src/features.py.
+
+table: shipments_model
+grain: one row per shipment_id
+source: weeks/week1/data/processed/shipments_clean.csv (week 1 cleaned extract, 4,200 rows, shipped 2025-01-01 to 2025-12-29)
+note: this is a seeded sample extract, not a live carrier feed; treated as such everywhere.
+
+input_columns:
+  shipment_id:      {dtype: string, nullable: false}
+  order_date:       {dtype: datetime64[ns], nullable: false}
+  ship_date:        {dtype: datetime64[ns], nullable: false}
+  delivery_date:    {dtype: datetime64[ns], nullable: true}
+  origin_city:      {dtype: string, nullable: false}
+  dest_city:        {dtype: string, nullable: false}
+  origin_country:   {dtype: category, nullable: false}
+  dest_country:     {dtype: category, nullable: false}
+  mode:             {dtype: category, nullable: false, allowed: [Air, Ocean, Road, Rail]}
+  carrier:          {dtype: string, nullable: true}
+  product_category: {dtype: category, nullable: false}
+  quantity:         {dtype: int64, nullable: false, min: 1}
+  weight_kg:        {dtype: float64, nullable: true, min: 0.01}
+  weight_imputed:   {dtype: bool, nullable: false}
+  freight_cost_usd: {dtype: float64, nullable: true, min: 0}
+  cost_imputed:     {dtype: bool, nullable: false}
+  transit_days:     {dtype: float64, nullable: true, min: 0}
+  delay_days:       {dtype: float64, nullable: true}
+
+derived_columns:
+  ship_dow:         {dtype: int64, description: "day of week of ship_date, Monday=0"}
+  ship_month:       {dtype: int64, description: "calendar month of ship_date"}
+  order_to_ship:    {dtype: float64, description: "(ship_date - order_date).days"}
+  distance_km:      {dtype: float64, description: "great-circle km between origin and destination city centroids"}
+  is_late:          {dtype: int64, description: "1 if delay_days > 0, else 0; the classification target"}
+  daily_volume:     {dtype: float64, description: "shipments per ship_date; the forecasting target (aggregated table)"}
+
+leakage_rules:
+  - delay_days, transit_days and delivery_date are consequences of the outcome and must never appear as features.
+  - the per-mode "promise" used to build delay_days is computed from training history only.
+  - lag and rolling features use strictly trailing observations (up to t-1); nothing at or after t.
