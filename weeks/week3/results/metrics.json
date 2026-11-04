@@ -1,0 +1,121 @@
+{
+  "splits": {
+    "forecast_train_start": "2025-01-01 00:00:00",
+    "forecast_train_end": "2025-10-20 00:00:00",
+    "forecast_val_start": "2025-10-21 00:00:00",
+    "forecast_val_end": "2025-12-01 00:00:00",
+    "forecast_test_start": "2025-12-02 00:00:00",
+    "forecast_test_end": "2025-12-29 00:00:00",
+    "classification_train_start": "2025-01-01 00:00:00",
+    "classification_test_end": "2025-12-29 00:00:00",
+    "classification_train_late": 49,
+    "classification_test_late": 15,
+    "classification_test_prevalence": 0.01762632197414806
+  },
+  "feature_manifest": {
+    "forecast_rows": 363,
+    "forecast_date_min": "2025-01-01 00:00:00",
+    "forecast_date_max": "2025-12-29 00:00:00",
+    "classification_rows": 4200,
+    "late_count": 72,
+    "late_rate": 0.017142857142857144,
+    "leakage_columns_banned": [
+      "delivery_date",
+      "transit_days",
+      "delay_days",
+      "is_late"
+    ]
+  },
+  "forecast": {
+    "naive": {
+      "model_name": "naive (y_t = y_t-1)",
+      "val_mae": 3.8095238095238093,
+      "test_mae": 3.5357142857142856,
+      "test_rmse": 4.321871287830241,
+      "test_smape": 30.475366801076486
+    },
+    "seasonal_naive": {
+      "model_name": "seasonal-naive (y_t = y_t-7)",
+      "val_mae": 3.5714285714285716,
+      "test_mae": 4.321428571428571,
+      "test_rmse": 6.287743179051947,
+      "test_smape": 34.14154523869429
+    },
+    "ridge": {
+      "model_name": "ridge regression (scaled)",
+      "val_mae": 2.610168846421731,
+      "test_mae": 2.7980315617610434,
+      "test_rmse": 3.8296282841024305,
+      "test_smape": 23.851026204007916
+    },
+    "gradient_boosting": {
+      "model_name": "gradient boosting (HistGradientBoostingRegressor)",
+      "val_mae": 2.948057129603328,
+      "test_mae": 2.8526131522543774,
+      "test_rmse": 3.9471065853453733,
+      "test_smape": 24.209021148713305
+    }
+  },
+  "classification": {
+    "majority": {
+      "model_name": "majority class (on time)",
+      "threshold": 0.5,
+      "accuracy": 0.982373678025852,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": NaN,
+      "pr_auc": NaN,
+      "confusion": [
+        [
+          836,
+          0
+        ],
+        [
+          15,
+          0
+        ]
+      ]
+    },
+    "logistic_regression": {
+      "model_name": "logistic regression (scaled, class-weighted)",
+      "threshold": 0.7999999999999999,
+      "accuracy": 0.918918918918919,
+      "precision": 0.10294117647058823,
+      "recall": 0.4666666666666667,
+      "f1": 0.1686746987951807,
+      "roc_auc": 0.8914673046251993,
+      "pr_auc": 0.09233404420962782,
+      "confusion": [
+        [
+          775,
+          61
+        ],
+        [
+          8,
+          7
+        ]
+      ]
+    },
+    "gradient_boosting": {
+      "model_name": "gradient boosting (class-weighted)",
+      "threshold": 0.05,
+      "accuracy": 0.9283196239717979,
+      "precision": 0.11666666666666667,
+      "recall": 0.4666666666666667,
+      "f1": 0.18666666666666668,
+      "roc_auc": 0.9002392344497607,
+      "pr_auc": 0.10225965294221909,
+      "confusion": [
+        [
+          783,
+          53
+        ],
+        [
+          8,
+          7
+        ]
+      ]
+    }
+  }
+}

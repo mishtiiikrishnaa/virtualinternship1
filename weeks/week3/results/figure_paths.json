@@ -1,0 +1,12 @@
+{
+  "fig01_demand_series": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig01_demand_series.png",
+  "fig02_weekly_seasonality": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig02_weekly_seasonality.png",
+  "fig03_forecast_intervals": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig03_forecast_intervals.png",
+  "fig04_residuals": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig04_residuals.png",
+  "fig05_error_by_dow": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig05_error_by_dow.png",
+  "fig06_late_by_mode": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig06_late_by_mode.png",
+  "fig07_confusion_matrix": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig07_confusion_matrix.png",
+  "fig08_roc_pr": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig08_roc_pr.png",
+  "fig09_feature_importance": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig09_feature_importance.png",
+  "fig10_learning_curve": "/Users/mishti/Documents/opencode/virtualinternship1/weeks/week3/figures/fig10_learning_curve.png"
+}

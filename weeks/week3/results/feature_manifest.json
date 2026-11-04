@@ -1,0 +1,14 @@
+{
+  "forecast_rows": 363,
+  "forecast_date_min": "2025-01-01 00:00:00",
+  "forecast_date_max": "2025-12-29 00:00:00",
+  "classification_rows": 4200,
+  "late_count": 72,
+  "late_rate": 0.017142857142857144,
+  "leakage_columns_banned": [
+    "delivery_date",
+    "transit_days",
+    "delay_days",
+    "is_late"
+  ]
+}
