@@ -6346,7 +6346,9 @@
     "mean_predicted": 0.02279117645119373,
     "observed_rate": 0.01762632197414806,
     "brier_score": 0.024965372846857833,
-    "calibration_slope": 0.11526471501587394
+    "calibration_slope": 0.11526471501587394,
+    "baseline_brier": 0.017315634747811726,
+    "brier_skill": -0.441782135651299
   },
   "conformal": {
     "level": 0.9,
@@ -6385,6 +6387,23 @@
       "expected_cost_no_triage": 22500.0,
       "expected_cost_triage_all": 3600.0,
       "cost_of_missed_late": 1500.0,
+      "cost_of_wasted_triage": 60.0
+    },
+    "policy_costs": {
+      "no_triage": 22500.0,
+      "triage_all": 51060.0,
+      "model": 15600.0,
+      "perfect": 0.0,
+      "confusion": {
+        "tn": 783,
+        "fp": 53,
+        "fn": 8,
+        "tp": 7
+      },
+      "n_shipments": 851,
+      "n_flagged": 60,
+      "n_missed": 8,
+      "cost_of_missed_late_shipments": 1500.0,
       "cost_of_wasted_triage": 60.0
     }
   },
@@ -6555,6 +6574,92 @@
         "cost_of_wasted_triage": 60.0,
         "expected_cost_savings_rule_vs_nontriage": 7320.0
       }
+    },
+    "triage_cost_optimised": {
+      "threshold": 0.5,
+      "expected_cost": 12300.0,
+      "candidates": [
+        {
+          "threshold": 0.005,
+          "expected_cost": 12780.0,
+          "flagged": 113,
+          "missed": 4
+        },
+        {
+          "threshold": 0.01,
+          "expected_cost": 14220.0,
+          "flagged": 87,
+          "missed": 6
+        },
+        {
+          "threshold": 0.02,
+          "expected_cost": 14460.0,
+          "flagged": 66,
+          "missed": 7
+        },
+        {
+          "threshold": 0.03,
+          "expected_cost": 13800.0,
+          "flagged": 55,
+          "missed": 7
+        },
+        {
+          "threshold": 0.04,
+          "expected_cost": 14820.0,
+          "flagged": 47,
+          "missed": 8
+        },
+        {
+          "threshold": 0.05,
+          "expected_cost": 14520.0,
+          "flagged": 42,
+          "missed": 8
+        },
+        {
+          "threshold": 0.06,
+          "expected_cost": 14220.0,
+          "flagged": 37,
+          "missed": 8
+        },
+        {
+          "threshold": 0.08,
+          "expected_cost": 13740.0,
+          "flagged": 29,
+          "missed": 8
+        },
+        {
+          "threshold": 0.1,
+          "expected_cost": 13560.0,
+          "flagged": 26,
+          "missed": 8
+        },
+        {
+          "threshold": 0.15,
+          "expected_cost": 13200.0,
+          "flagged": 20,
+          "missed": 8
+        },
+        {
+          "threshold": 0.2,
+          "expected_cost": 12840.0,
+          "flagged": 14,
+          "missed": 8
+        },
+        {
+          "threshold": 0.3,
+          "expected_cost": 12660.0,
+          "flagged": 11,
+          "missed": 8
+        },
+        {
+          "threshold": 0.5,
+          "expected_cost": 12300.0,
+          "flagged": 5,
+          "missed": 8
+        }
+      ],
+      "cost_false_negative": 1500.0,
+      "cost_false_positive": 60.0
     }
   },
   "assumptions": [

@@ -10,9 +10,12 @@ from __future__ import annotations
 
 from pathlib import Path
 import json
+from typing import Sequence
 
 import numpy as np
 import pandas as pd
+
+from src import metrics
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -89,6 +92,44 @@ def triage_backtest(
     stats["expected_cost_savings_rule_vs_nontriage"] = float(
         stats["expected_cost_no_triage"] - stats["expected_cost_rule"])
     return stats
+
+
+def cost_optimised_threshold(
+    y_true: np.ndarray, proba: np.ndarray, cost_false_negative: float,
+    cost_false_positive: float, grid: Sequence[float] | None = None,
+) -> dict:
+    """Threshold on the validation window that minimises expected triage cost.
+
+    expected cost of a rule = cost_false_positive * flagged + cost_false_negative * missed,
+    minimised over a grid of candidate thresholds on the validation probabilities.
+    """
+    y_true = np.asarray(y_true, dtype=int)
+    proba = np.asarray(proba, dtype=float)
+    if grid is None:
+        grid = [0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.10, 0.15, 0.20, 0.30, 0.50]
+    best_t, best_cost = None, None
+    rows = []
+    for t in grid:
+        pred = (proba >= t).astype(int)
+        tn, fp, fn, tp = metrics.confusion_matrix(y_true, pred).ravel()
+        flagged = int(tp) + int(fp)
+        missed = int(fn)
+        cost = float(cost_false_positive * flagged + cost_false_negative * missed)
+        rows.append({
+            "threshold": float(t),
+            "expected_cost": cost,
+            "flagged": flagged,
+            "missed": missed,
+        })
+        if best_cost is None or cost < best_cost:
+            best_t, best_cost = float(t), cost
+    return {
+        "threshold": best_t,
+        "expected_cost": float(best_cost),
+        "candidates": rows,
+        "cost_false_negative": float(cost_false_negative),
+        "cost_false_positive": float(cost_false_positive),
+    }
 
 
 # -------------------------------------------------------------------------- #

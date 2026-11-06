@@ -33,6 +33,7 @@ from src import decision_support, features, make_figures, metrics, models
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 FIGURES = ROOT / "reports" / "figures"
+REPORTS = ROOT / "reports"
 REPORT = ROOT / "reports" / "Week4_Decision_Support_Report.docx"
 RANDOM_SEED = 42
 COST_FALSE_NEGATIVE = 1500.0   # assumption: cost of a missed late shipment (USD)
@@ -286,6 +287,8 @@ def run() -> dict:
     confusion_gb = metrics.confusion_stats(yte, gb_pred)
     confusion_logistic = metrics.confusion_stats(yte, logistic_pred)
     calibration = metrics.calibration_stats(yte, gb_test_proba)
+    baseline_brier = metrics.baseline_brier(yte, prevalence=float(yte.mean()))
+    brier_skill_score = metrics.brier_skill(calibration["brier_score"], baseline_brier)
     q_conformal = metrics.conformal_quantile(yva, gb_val_proba, level=CONF_LEVEL)
     conformal = metrics.conformal_coverage(yte, gb_test_proba, q_conformal, level=CONF_LEVEL)
     ridge = forecast_results["ridge"]
@@ -294,6 +297,11 @@ def run() -> dict:
         yte, gb_test_proba, gb.threshold,
         cost_false_negative=COST_FALSE_NEGATIVE, cost_false_positive=COST_FALSE_POSITIVE,
     )
+    pred_test = (gb_test_proba >= gb.threshold).astype(int)
+    policy = metrics.policy_costs(
+        yte, pred_test, COST_FALSE_NEGATIVE, COST_FALSE_POSITIVE, COST_FALSE_POSITIVE)
+    cost_opt = decision_support.cost_optimised_threshold(
+        yva, gb_val_proba, COST_FALSE_NEGATIVE, COST_FALSE_POSITIVE)
     sweep = metrics.threshold_sweep(
         yva, gb_val_proba, thresholds=[0.01, 0.025, 0.05, 0.075, 0.10, 0.20, 0.30, 0.50])
 
@@ -328,13 +336,27 @@ def run() -> dict:
             "gradient_boosting": confusion_gb,
             "logistic_regression": confusion_logistic,
         },
-        "calibration": calibration,
+        "calibration": {
+            **calibration,
+            "baseline_brier": baseline_brier,
+            "brier_skill": brier_skill_score,
+        },
         "conformal": {"level": CONF_LEVEL, "quantile": q_conformal, "coverage": conformal},
         "coverage": {"forecast_interval": coverage},
-        "cost": {"false_negative_usd": COST_FALSE_NEGATIVE, "false_positive_usd": COST_FALSE_POSITIVE, "metrics": cost},
+        "cost": {
+            "false_negative_usd": COST_FALSE_NEGATIVE,
+            "false_positive_usd": COST_FALSE_POSITIVE,
+            "metrics": cost,
+            "policy_costs": policy,
+        },
         "thresholds": {"sweep": sweep},
-        "decisions": {"register": decision_support.build_decision_register(), "backtests": {
-            "forecast": backtest, "triage": triage}},
+        "decisions": {
+            "register": decision_support.build_decision_register(),
+            "backtests": {
+                "forecast": backtest, "triage": triage,
+            },
+            "triage_cost_optimised": cost_opt,
+        },
         "assumptions": [
             {"id": "A-1", "parameter": "cost of a missed late shipment", "value_usd": COST_FALSE_NEGATIVE,
              "status": "assumption", "stress_test": "re-run triage backtest at 2x and 0.5x cost"},
@@ -346,6 +368,30 @@ def run() -> dict:
         "roadmap": build_roadmap(),
         "headline": build_headline(coverage),
     }
+
+    figure_annotations = {
+        "fig04_forecast_vs_baselines": {
+            "model": ridge.model_name,
+            "test_mae": ridge.test_mae,
+            "interval_half_width": (ridge.interval_upper[0] - ridge.interval_lower[0]) / 2,
+            "coverage": coverage["coverage"],
+        },
+        "fig05_confusion_matrix": {
+            "counts": cost,
+        },
+        "fig06_calibration": {
+            "brier": calibration["brier_score"],
+            "baseline_brier": baseline_brier,
+            "brier_skill": brier_skill_score,
+            "conformal_coverage": conformal["coverage"],
+        },
+        "fig09_scenarios": {
+            name: {"forecast_test_mae": s["forecast_test_mae"], "late_recall": s["late_recall"]}
+            for name, s in ((s["name"], s) for s in results["scenarios"])
+        },
+    }
+    (REPORTS / "figure_annotations.json").write_text(json.dumps(figure_annotations, indent=2) + "\n")
+
     RESULTS.mkdir(parents=True, exist_ok=True)
     (RESULTS / "results.json").write_text(json.dumps(_json_safe(results), indent=2) + "\n")
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import numpy as np
+
 from src import decision_support
 
 
@@ -32,3 +34,13 @@ def test_forecast_backtest_reports_shipment_days():
     assert out["decision_id"] == "D-1"
     assert out["horizon_days"] == 2
     assert out["model_mae"] == 2.0
+
+
+def test_cost_optimised_threshold_picks_minimising_candidate():
+    y = np.array([0, 0, 1, 1, 0, 1])
+    proba = np.array([0.9, 0.8, 0.7, 0.2, 0.3, 0.85])
+    out = decision_support.cost_optimised_threshold(y, proba, cost_false_negative=1500.0, cost_false_positive=60.0)
+    assert any(c["threshold"] == out["threshold"] for c in out["candidates"])
+    best = min(out["candidates"], key=lambda c: c["expected_cost"])
+    assert out["threshold"] == best["threshold"]
+    assert out["expected_cost"] == best["expected_cost"]

@@ -114,7 +114,9 @@ an interval half width of about 6.8 shipments per day, and an empirical
 coverage of 92.9 percent. The late-delivery classifier at the cost-weighted
 threshold of 0.05 reached a recall of 46.7 percent at a precision of 11.7
 percent, with an expected cost of 1,500 dollars per missed late shipment and 60
-dollars per wasted escalation.
+dollars per wasted escalation. Its Brier score is 0.025 against a base-rate
+Brier of 0.017 with a negative Brier skill, so the probabilities are ranking
+scores rather than calibrated probabilities.
 
 ## How the numbers are guaranteed to match the code
 

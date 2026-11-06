@@ -123,7 +123,10 @@ def executive_summary(r: Report) -> None:
         f"on the held-out test window, with a ROC-AUC of {num(CL['gradient_boosting']['roc_auc'], 3)} and a "
         f"precision-recall area under the curve of {num(CL['gradient_boosting']['pr_auc'], 3)}. The expected "
         f"cost of a missed late shipment is {num(COST_MISSED, 0)} and the expected cost of a wasted triage "
-        f"escalation is {num(COST_ESCALATION, 0)}."
+        f"escalation is {num(COST_ESCALATION, 0)}. The classifier Brier score is {num(CALIB['brier_score'], 4)} "
+        f"against a base-rate Brier of {num(CALIB['baseline_brier'], 4)} with a Brier skill of "
+        f"{num(CALIB['brier_skill'], 3)}, so the probabilities are not better than a constant base-rate "
+        f"predictor and should be read as ranking scores rather than calibrated probabilities."
     )
     r.p(
         f"The development extract is seeded rather than live, so the findings that follow describe that "
@@ -390,18 +393,21 @@ def section_4(r: Report) -> None:
         width=12.0,
     )
     r.p(
-        f"The classifier probabilities were calibrated against observed outcomes; the Brier score is "
-        f"{num(CALIB['brier_score'], 4)} and the split-conformal 90 percent quantile on the validation "
-        f"window is {num(R['conformal']['quantile'], 4)}, giving an empirical coverage of "
-        f"{pct(CONF_COV['coverage'], 3)} on the held-out test window."
+        f"The classifier probabilities were checked against observed outcomes; the Brier score is "
+        f"{num(CALIB['brier_score'], 4)} against a base-rate Brier of {num(CALIB['baseline_brier'], 4)} with a "
+        f"Brier skill of {num(CALIB['brier_skill'], 3)}, so the model is not better than a constant base-rate "
+        f"predictor and the probabilities should be read as ranking scores rather than calibrated "
+        f"probabilities; the split-conformal 90 percent quantile on the validation window is {num(R['conformal']['quantile'], 4)}, "
+        f"giving an empirical coverage of {pct(CONF_COV['coverage'], 3)} on the held-out test window."
     )
     figure(
         r, "fig06",
         "Calibration of the late-delivery classifier: predicted probability against observed rate.",
         "Reliability diagram with ten bins of predicted probability against observed late rate.",
         "to check whether the probability scores mean what they claim.",
-        f"The Brier score is {num(CALIB['brier_score'], 4)} and the empirical coverage of the conformal "
-        f"interval is {pct(CONF_COV['coverage'], 3)}.",
+        f"The Brier score is {num(CALIB['brier_score'], 4)} against a base-rate Brier of "
+        f"{num(CALIB['baseline_brier'], 4)} with a Brier skill of {num(CALIB['brier_skill'], 3)}; the "
+        f"empirical coverage of the conformal interval is {pct(CONF_COV['coverage'], 3)}.",
         width=12.0,
     )
     r.p(
@@ -572,11 +578,18 @@ def section_7(r: Report) -> None:
     r.p(
         "The business impact of the decisions can be read in cost terms. The triage decision is evaluated "
         f"against the expected cost of no triage of {num(COST_METRICS['expected_cost_no_triage'], 0)} dollars "
-        f"and against the expected cost of triage for every shipment of "
-        f"{num(COST_METRICS['expected_cost_triage_all'], 0)} dollars, and the capacity decision is "
+        f"and against the policy cost of triage for every shipment of "
+        f"{num(R['cost']['policy_costs']['triage_all'], 0)} dollars, and the capacity decision is "
         f"evaluated against the avoided under-capacity shipment-days of "
         f"{num(BACKTEST['forecast']['avoided_shipment_days'], 1)}. The implication for leadership is "
         "therefore measurable in dollars and shipment-days rather than in feelings about service."
+    )
+    r.p(
+        "The one policy-cost table compares no triage, triage of every shipment, the model at the chosen "
+        f"threshold and perfect foresight. The model policy costs {num(R['cost']['policy_costs']['model'], 0)} "
+        f"dollars against {num(R['cost']['policy_costs']['no_triage'], 0)} dollars for no triage, and the "
+        f"escalation cost applies to every flagged shipment including true positives, with the missed-late "
+        f"cost of {num(COST_MISSED, 0)} per promise."
     )
     r.p(
         "The scenario analysis gives the decision maker a way to test decisions before committing to them; "

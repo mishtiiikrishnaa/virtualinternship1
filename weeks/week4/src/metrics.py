@@ -185,3 +185,55 @@ def interval_coverage(
         "coverage": float(inside.mean()),
         "mean_width": float((upper - lower).mean()),
     }
+
+
+def baseline_brier(y_true: np.ndarray, prevalence: float | None = None) -> float:
+    """Brier score of the constant predictor sitting at the base rate.
+
+    A constant predictor that always predicts the observed prevalence scores
+    Brier = mean((y - p)^2) = p * (1 - p); this is the honest no-skill baseline
+    for a probabilistic classifier on a skewed base rate.
+    """
+    y_true = np.asarray(y_true, dtype=int)
+    p = float(y_true.mean()) if prevalence is None else float(prevalence)
+    return float(np.mean((y_true - p) ** 2))
+
+
+def brier_skill(model_brier: float, base_brier: float) -> float:
+    """Brier skill score: negative means the model is worse than the base rate."""
+    if base_brier <= 0:
+        return float("nan")
+    return float(1.0 - model_brier / base_brier)
+
+
+def policy_costs(
+    y_true: np.ndarray, pred: np.ndarray, cost_false_negative: float,
+    cost_false_positive: float, cost_per_action: float,
+) -> dict:
+    """One policy-cost table computed from the confusion matrix and the costs.
+
+    Policies compared on the same shipment set:
+      no_triage        every positive is missed -> cost_false_negative * n_pos
+      triage_all       every shipment is escalated -> cost_per_action * n
+      model            escalation on flagged (tp + fp) plus missed (fn)
+      perfect          no missed promise at all -> 0
+    The escalation cost is charged to every flagged shipment, including true
+    positives, because an escalation that prevents a miss is itself an action.
+    """
+    y_true = np.asarray(y_true, dtype=int)
+    pred = np.asarray(pred, dtype=int)
+    tn, fp, fn, tp = confusion_matrix(y_true, pred).ravel()
+    flagged = int(tp) + int(fp)
+    missed = int(fn)
+    return {
+        "no_triage": float(cost_false_negative * int(np.asarray(y_true).sum())),
+        "triage_all": float(cost_per_action * int(len(y_true))),
+        "model": float(cost_per_action * flagged + cost_false_negative * missed),
+        "perfect": 0.0,
+        "confusion": {"tn": int(tn), "fp": int(fp), "fn": int(fn), "tp": int(tp)},
+        "n_shipments": int(len(y_true)),
+        "n_flagged": flagged,
+        "n_missed": missed,
+        "cost_of_missed_late_shipments": float(cost_false_negative),
+        "cost_of_wasted_triage": float(cost_per_action),
+    }

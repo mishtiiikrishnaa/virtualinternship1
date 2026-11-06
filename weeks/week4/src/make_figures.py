@@ -131,7 +131,7 @@ def fig_forecast_vs_baselines(result, daily: pd.DataFrame) -> Path:
     ax.set_title(f"Forecast vs baselines: {r.model_name} on the 28-day held-out window")
     ax.legend(fontsize=8, loc="upper left")
     fig.text(0.02, 0.97, f"test MAE {r.test_mae:.2f} shipments/day; interval half width "
-             f"{float(np.mean((np.asarray(r.interval_upper, dtype=float) - np.asarray(r.predictions, dtype=float)) / 2.0)):.1f}", transform=ax.transAxes,
+             f"{float(np.mean((np.asarray(r.interval_upper, dtype=float) - np.asarray(r.interval_lower, dtype=float)) / 2.0)):.1f}", transform=ax.transAxes,
              fontsize=9, color=RED, ha="left")
     return _save(fig, "fig04_forecast_vs_baselines")
 
