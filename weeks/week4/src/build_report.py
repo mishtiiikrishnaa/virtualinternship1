@@ -212,16 +212,17 @@ def executive_summary(r: Report) -> None:
         f"with a 95% prediction interval half-width of {num(HALF_WIDTH, 1)} shipments/day.",
         f"Late delivery triage: recall of {pct(HEADLINE['late_recall_gradient_boosting'], 1)} at precision {pct(HEADLINE['late_precision'], 1)} "
         f"and ROC-AUC {num(HEADLINE['roc_auc'], 3)}, yielding {money(POLICY['saving'])} net saving.",
-        f"Extract demand signals: fourth-quarter peak index of {num(EDA['q4_index'], 2)} (+34.9% uplift) and February 2025 disruption (60.5% on-time).",
+        f"Extract demand signals: fourth-quarter peak index of {num(EDA['q4_index'], 2)} (+34.8% uplift) and February 2025 disruption (71.4% on-time versus 83.1% baseline).",
     ])
     r.h2("Recommendations")
     r.numbered([
         f"Plan next-day dispatch capacity at the point forecast plus the 95% prediction interval upper bound ({num(HALF_WIDTH, 1)} buffer); "
         f"the capacity sweep shows this policy reduces shortfall from 41.9 to 6.1 shipment-days while holding 6.8 unused units/day (break-even ratio 4.31:1).",
-        f"Deploy expeditor triage at risk score threshold {num(TOD, 2)}, delivering {money(POLICY['saving'])} in net policy savings. "
+        f"Deploy expeditor triage at risk score threshold {num(TOD, 2)}, carrying a point estimate of {money(POLICY['saving'])} in net policy savings "
+        f"with a 95% bootstrap CI of {money(HEADLINE['triage_saving_ci_95'][0])} to {money(HEADLINE['triage_saving_ci_95'][1])}; test outputs are exploratory.",
         f"This threshold is recommended over validation cost-optimal t*=0.50, which suppresses all alarms due to small validation sample size and produces zero recall on test.",
-        f"Enforce mode-specific service promises and place underperforming carrier lanes on corrective action plans; the extract reveals a 6.5 percentage point carrier on-time gap concentrated entirely in Ocean freight.",
-        f"Establish automated retraining triggers when rolling 28-day forecast coverage falls below 90% or feature drift PSI exceeds 0.20.",
+        f"Enforce mode-specific service promises; Ocean lanes underperform the network baseline on-time rate by {num(EDA['carrier_gap_extract_pp'], 1)} percentage points (extract carrier range 93.5% to 100% on-time).",
+        f"Establish automated retraining triggers when rolling 28-day forecast coverage falls below 90% (about 16% false-alarm rate for a well-calibrated 95% model, per the binomial assumption) or feature drift PSI exceeds 0.20.",
     ])
     r.p(
         "Critical limitation: the development extract is seeded synthetic data generated in week 1. All findings "
@@ -247,12 +248,12 @@ def section_1(r: Report) -> None:
         "to a concrete financial loss function, balancing false negatives (missed promises at $1,500) against false positives "
         "(wasted expediting at $60), and capacity shortfall against idle reservation waste."
     )
-    r.h2("1.2 Forensic audit and fixes from earlier phases")
+    r.h2("1.2 Corrections to earlier weeks")
     r.p(
-        "A forensic review of deliverables from weeks 1 to 3 identified three procedural defects that have been resolved. "
-        "First, document core properties were previously overwritten by a shared utility; properties are now explicitly authored. "
-        "Second, forecast prediction intervals previously reported inconsistent half-widths; half-widths are now strictly unified at 6.8 shipments/day. "
-        "Third, data cleaning steps and EDA figures were reconciled to eliminate stale cross-references."
+        "Three data and model issues found in weeks 1 to 3 were corrected in this week's deliverable and are recorded here "
+        "for the reader: the week 3 prediction interval half-width had been quoted two different ways and is now unified at "
+        "6.8 shipments per day, the cleaning step previously merged two cleaning rows into one for display, and 43 negative "
+        "freight-cost records were kept as credit notes rather than included in cost aggregates."
     )
 
 
@@ -287,7 +288,8 @@ def section_2(r: TrackingReport) -> None:
         "Data cleaning and imputation waterfall for the development extract.",
         "Waterfall chart of raw shipments to published cleaned extract.",
         "to document row exclusions and imputation volumes in the cleaning pipeline.",
-        "Cleaning removed 180 duplicates and credit notes while imputing 382 weights and 220 costs to yield 4,200 curated rows.",
+        "Cleaning removed 180 rows (122 byte-identical duplicates plus 58 conflicting keys resolved by latest state), "
+        "excluded 43 negative freight credit notes from cost aggregates, and imputed 382 weights and 220 costs to yield 4,200 curated rows.",
         width=12.0,
     )
     figure(
@@ -344,7 +346,7 @@ def section_4(r: Report) -> None:
     r.p(
         f"Daily demand forecasting was implemented using time-ordered splits: training (Jan 1 to Oct 20), validation (Oct 21 to Dec 1), "
         f"and held-out testing (Dec 2 to Dec 29, 28 days). Scaled ridge regression achieved a test MAE of {num(F['ridge']['test_mae'], 2)} "
-        f"shipments per day, outperforming the lag-1 naive baseline ({num(F['naive']['test_mae'], 2)}) by 20.9%. "
+        f"shipments per day, outperforming the lag-1 naive baseline ({num(F['naive']['test_mae'], 2)}) by 20.9%, and also beating the seasonal-naive (lag-7) benchmark at {num(F['seasonal_naive']['test_mae'], 2)} by 35.2%. "
         f"The model's residual spread establishes a next-day 95% prediction interval with half-width of {num(HALF_WIDTH, 1)} shipments/day, "
         f"achieving {pct(COVERAGE['coverage'], 1)} coverage (26 of 28 test days inside the band, 95% CI {pct(COVERAGE['coverage_ci_95'][0], 1)} "
         f"to {pct(COVERAGE['coverage_ci_95'][1], 1)}). This model operates strictly on a next-day horizon; longer multi-day horizons were not validated."
@@ -370,10 +372,18 @@ def section_4(r: Report) -> None:
         ],
         widths=[4.5, 2.5, 2.5, 2.5, 3.0], font_size=8.0,
     )
+    _best = min(CAP_SWEEP["policies"], key=lambda pp: pp["total_capacity_cost_usd"])
+    _worst = CAP_SWEEP["policies"][0]
+    _fine = CAP_SWEEP["policies"][3]
     r.p(
-        f"The Forecast + 95% bound reduces shortfall from 41.9 to 6.1 shipment-days (saving 35.8 shortfall units) while "
-        f"incurring 6.8 unused units per day (154.6 total unused units added). The break-even cost ratio is "
-        f"{num(CAP_SWEEP['break_even_cost_ratio'], 2)}:1. At an assumed ratio of 5:1 ($150 vs $30), the 95% bound is financially optimal."
+        f"At the assumed 5:1 unit-cost ratio ($150 per shortfall unit, $30 per unused reservation), the lowest-cost "
+        f"policy is {_best['policy']} at {money(_best['total_capacity_cost_usd'])}, with "
+        f"{_best['under_capacity_days']} under-capacity days out of 28 against {_worst['under_capacity_days']} for the "
+        f"point forecast. The shortfall column and the budget are both in shipment-days: 13 of 28 days versus one and "
+        f"two days miscount a shipment as a day of delay. The Forecast + 95% bound costs "
+        f"{money(_fine['total_capacity_cost_usd'])} ({money(_fine['total_capacity_cost_usd'] - _best['total_capacity_cost_usd'])} "
+        f"more than the optimum) but cuts under-capacity days to {_fine['under_capacity_days']} of 28. Adopting it is a "
+        f"service-promise decision, not the cost-minimising decision."
     )
     figure(
         r, "fig12",
@@ -395,7 +405,7 @@ def section_4(r: Report) -> None:
         f"However, this apparent optimality is an artifact of small validation sample size: because the model detected 0 late shipments (TP=0) "
         f"at both thresholds on validation, the cost function trivially preferred t*=0.50 solely by suppressing all alarms (flagging 5 vs 42). "
         f"As shown in Table 2, deploying t*=0.50 on test fails completely: it catches 0 late shipments (0.0% recall) and produces a net loss of -$600. "
-        f"In contrast, operational threshold t=0.05 catches 7 of 15 late shipments (46.7% recall) and delivers $6,900 in net policy savings."
+        f"In contrast, operational threshold t=0.05 catches 7 of 15 late shipments (46.7% recall) with point estimate $6,900 and 95% bootstrap CI $0 to $14,641 (exploratory, test-selected threshold)."
     )
     r.table(
         ["Metric", "Operational Threshold (t = 0.05)", "Val-Cost-Optimal (t* = 0.50)"],
@@ -427,7 +437,7 @@ def section_4(r: Report) -> None:
         width=11.5,
     )
     r.p(
-        "Feature permutation importance (Figure 7) reveals that Ocean mode alone accounts for 0.1989 of ROC-AUC drop, "
+        "Feature permutation importance (Figure 8) reveals that Ocean mode alone accounts for 0.1989 of ROC-AUC drop, "
         "while all other features contribute less than 0.008. Analysis of the week 1 generator confirms that Ocean transit times "
         "were simulated with wide transit windows (18 to 38 days) against tight mode promises. The classifier primarily rediscovers "
         "this seeded generator artifact rather than uncovering an operational causal lever."
@@ -463,7 +473,7 @@ def section_6(r: Report) -> None:
     r.h1("6. Decision support framework")
     r.p(
         "The decision framework operationalizes the analytical models into four production rules. "
-        "Figure 8 outlines the automated triage flow from booking features to expeditor escalation."
+        "Figure 9 outlines the operational triage flow from booking features to expeditor escalation."
     )
     figure(
         r, "fig08",
@@ -539,7 +549,8 @@ def section_7(r: Report) -> None:
         "Triage policy net savings sensitivity grid across FN and FP multipliers.",
         "Heatmap showing net dollar savings for threshold t=0.05 across 25 cost combinations.",
         "to delineate the financial boundaries under which automated triage remains value-accretive.",
-        "The model maintains positive savings across 21 of 25 cells, flipping negative only when expediting costs exceed $175.",
+        "The model posts a positive saving in 19 of the 25 cells; the six negative cells are those where the "
+        "false-negative to false-positive cost ratio (0.25x / 1.0x and below baseline ratios) sits under the 8.57:1 break-even.",
         width=11.5,
     )
 
@@ -551,7 +562,7 @@ def section_8(r: Report) -> None:
     r.h1("8. Risk assessment")
     r.p(
         "Operational risks are categorized across data, model, contractual, and execution dimensions. "
-        "Figure 10 maps risks onto a calibrated 3x3 matrix. The highest-severity risk is R-1 (High Likelihood / High Impact), "
+        "Figure 12 maps risks onto a 3x3 likelihood-by-impact matrix. The highest-severity risk is R-1 (High Likelihood / High Impact), "
         "reflecting reliance on synthetic sample data rather than production telemetry."
     )
     figure(

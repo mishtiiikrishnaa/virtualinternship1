@@ -269,6 +269,11 @@ def check_critical_quantities_consistency(doc: Document, results: dict) -> list[
     # Add capacity policy costs from sweep
     for p in results["capacity_sweep"]["policies"]:
         canonical_currencies.add(float(p["total_capacity_cost_usd"]))
+    # derived differences between any policy and the cheapest (wording may quote gaps)
+    if results["capacity_sweep"]["policies"]:
+        best = min(p["total_capacity_cost_usd"] for p in results["capacity_sweep"]["policies"])
+        for p in results["capacity_sweep"]["policies"]:
+            canonical_currencies.add(round(abs(float(p["total_capacity_cost_usd"]) - float(best)), 2))
     # Add sensitivity table values
     for cell in results["sensitivity"]["cells"]:
         canonical_currencies.add(float(cell["cost_fn"]))
