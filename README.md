@@ -1,141 +1,295 @@
-# virtualinternship1
+<a id="readme-top"></a>
+<div align="center">
+    
+<!-- PROJECT SHIELDS -->
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![Last Commit][commit-shield]][commit-url]
 
-One repository for the four-week virtual internship: public logistics data,
-python preprocessing, and the written reports that go with each week.
+</div>
+<!-- PROJECT HEADER -->
+<br />
+<div align="center">
+  <h3 align="center">Virtual Logistics Data Analysis Internship</h3>
 
-Each week lives in its own directory with its own report, code, data contract
-and generated artefacts. Nothing from a later week overwrites an earlier one,
-so a reviewer can read week 1 without wading through week 4, and the commit
-history for each week stays legible.
+  <p align="center">
+    A four-week, end-to-end analytics project on shipment data: preprocessing, exploratory analysis,
+    predictive modelling, and a cost-grounded decision support report.
+    <br />
+    <a href="#deliverables"><strong>Explore the deliverables »</strong></a>
+    <br />
+    <br />
+    <a href="weeks/week4/reports/Week4_Decision_Support_Report.pdf">Read the Week 4 report</a>
+    &middot;
+    <a href="https://github.com/mishtiiikrishnaa/virtualinternship1/issues/new">Report Bug</a>
+    &middot;
+    <a href="https://github.com/mishtiiikrishnaa/virtualinternship1/issues/new">Request Feature</a>
+  </p>
+</div>
 
-## The four weeks
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#deliverables">Deliverables</a></li>
+        <li><a href="#headline-results-week-4">Headline Results (Week 4)</a></li>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#repository-layout">Repository Layout</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-| week | focus | status | folder |
-|---|---|---|---|
-| 1 | Strategic data collection and preprocessing blueprint | submitted | [`weeks/week1`](weeks/week1) |
-| 2 | Exploratory data analysis and visualization | submitted | [`weeks/week2`](weeks/week2) |
-| 3 | Predictive modelling and forecasting | submitted (in this commit) | [`weeks/week3`](weeks/week3) |
-| 4 | Decision support and business impact | submitted | [`weeks/week4`](weeks/week4) |
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Week 2 onward build on the same schema contract and entry point introduced in
-week 1, so the structure is deliberately shallow: one folder per week, no
-shared package to break, and a root `Makefile` that delegates.
+This repository holds all four weeks of a virtual logistics data analysis internship. The work follows one
+thread from raw data to a business decision:
 
-## Progress
+1. clean and validate shipment data against an explicit schema contract,
+2. explore it for demand and service-quality signals,
+3. build next-day demand forecasts and a late-delivery risk model, and
+4. turn those models into costed operational decisions, with the uncertainty stated.
 
-- [x] week 1
-- [x] week 2
-- [x] week 3
-- [x] week 4
+Each week lives in its own directory with its own code, requirements, generated results and report. Nothing
+from a later week overwrites an earlier one, so a reviewer can read Week 1 without wading through Week 4, and
+the commit history for each week stays legible.
 
-## Layout
+The final deliverable is the [Week 4 Comprehensive Decision Support Report](weeks/week4/reports/Week4_Decision_Support_Report.pdf),
+which integrates the earlier weeks into a decision register, a risk assessment, a sensitivity analysis and an
+implementation roadmap. Every number in it is checked by an automated audit against the values the pipeline
+emitted.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Deliverables
+
+| Week | Focus | Report | Code | Figures |
+|------|-------|--------|------|---------|
+| 1 | Strategic data collection and preprocessing blueprint | [PDF](weeks/week1/reports/Week1_Strategic_Data_Collection_and_Preprocessing_Blueprint.pdf) · [DOCX](weeks/week1/reports/Week1_Strategic_Data_Collection_and_Preprocessing_Blueprint.docx) | [`weeks/week1`](weeks/week1) | 3 |
+| 2 | Exploratory data analysis and visualization, with a real transborder freight benchmark | [PDF](weeks/week2/reports/Week2_EDA_and_Visualization.pdf) · [DOCX](weeks/week2/reports/Week2_EDA_and_Visualization.docx) | [`weeks/week2`](weeks/week2) | 15 |
+| 3 | Predictive modelling and forecasting, with a leakage review | [PDF](weeks/week3/reports/Week3_Predictive_Modelling_and_Forecasting.pdf) · [DOCX](weeks/week3/reports/Week3_Predictive_Modelling_and_Forecasting.docx) | [`weeks/week3`](weeks/week3) | 10 |
+| 4 | Comprehensive reporting and decision support | [PDF](weeks/week4/reports/Week4_Decision_Support_Report.pdf) · [DOCX](weeks/week4/reports/Week4_Decision_Support_Report.docx) | [`weeks/week4`](weeks/week4) | 13 |
+
+Week 4 also keeps its working notes in [`weeks/week4/docs`](weeks/week4/docs): `audit.md`, `decisions.md`,
+`leakage_review.md`, `reproducibility.md` and `rubric.md`. Week 3 has its own
+[`leakage_review.md`](weeks/week3/docs/leakage_review.md).
+
+### Headline Results (Week 4)
+
+All figures below are on the **simulated development extract** (4,200 shipments, calendar year 2025) and match
+the submitted report.
+
+| Question | Result |
+|----------|--------|
+| Next-day demand forecast (28-day test window) | Scaled ridge MAE **2.80** shipments/day, against 3.54 for lag-1 naive and 4.32 for seasonal-naive (lag-7) |
+| Forecast uncertainty | 95% prediction interval half-width 6.8; coverage 92.9% (26 of 28 days; Wilson 95% CI 77.4% to 98.0%) |
+| Capacity policy | Forecast + 1 residual standard deviation: total cost **$5,339**, 4 of 28 under-capacity days. The 95% bound ($6,638) is kept as a service-level alternative |
+| Late-delivery triage (threshold 0.05) | Recall 46.7% (Wilson 24.8% to 69.9%), precision 11.7%, ROC-AUC 0.900 on 15 late events |
+| Net triage saving | **$6,900**, 95% bootstrap CI $0 to $14,641 |
+| Break-even | Triage beats no-triage when the missed-late to wasted-triage cost ratio exceeds 8.57:1 |
+
+Unit costs ($1,500 per missed late shipment, $60 per escalation, $150 per capacity shortfall unit, $30 per
+unused reservation unit) are modelling assumptions, not observed data.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Built With
+
+[![Python][python-shield]][python-url]
+[![pandas][pandas-shield]][pandas-url]
+[![NumPy][numpy-shield]][numpy-url]
+[![scikit-learn][sklearn-shield]][sklearn-url]
+[![Matplotlib][mpl-shield]][mpl-url]
+[![Plotly][plotly-shield]][plotly-url]
+[![Jupyter][jupyter-shield]][jupyter-url]
+[![pytest][pytest-shield]][pytest-url]
+
+Reports are generated by each week's `build_report.py` as `.docx` and rendered to `.pdf`.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get a local copy up and running, follow these steps. Each week is self-contained with its own
+`requirements.txt`, so you can run any one of them on its own.
+
+### Prerequisites
+
+- Python 3.13
+- `pandoc` and LibreOffice, only if you want to rebuild the `.docx` / `.pdf` reports
+- `make` (optional; every step also works as a plain `python` command)
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/mishtiiikrishnaa/virtualinternship1.git
+   cd virtualinternship1
+   ```
+2. Create a virtual environment inside the week you want to run (Week 4 shown)
+   ```sh
+   cd weeks/week4
+   python -m venv .venv && source .venv/bin/activate
+   ```
+3. Install that week's dependencies
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- USAGE -->
+## Usage
+
+Run these from inside the week's directory.
+
+**Week 4: decision support** (22 tests)
+
+```sh
+python -m src.run_pipeline          # fit models, compute policies, emit results.json and emitted_numbers.json
+python -m src.build_report          # rebuild the report from the emitted values
+python -m src.audit_report_numbers  # check every number in the report against the emitted values
+python -m src.figure_qa             # figure checks
+python -m pytest -q
+```
+
+The audit extracts every numeric token from the built report and verifies it against the pipeline's emitted
+numbers, so a figure in the text cannot drift away from what the code produced.
+
+**Week 3: predictive modelling** (13 tests) and **Week 1: preprocessing** (19 tests)
+
+```sh
+python -m src.run_pipeline
+python -m pytest -q
+python -m src.build_report          # needs pandoc + LibreOffice
+```
+
+**Week 2: exploratory analysis.** See [`weeks/week2/README.md`](weeks/week2/README.md)
+for the run order. The analysis is also available as a notebook:
+[`weeks/week2/notebooks/week2_eda.ipynb`](weeks/week2/notebooks/week2_eda.ipynb).
+
+The Week 4 report's **decision register** turns the models into four operational rules:
+
+| ID | Rule |
+|----|------|
+| D-1 | Commit next-day dispatch capacity at forecast + 1 residual standard deviation |
+| D-2 | Escalate shipments with late-delivery risk score at or above 0.05 |
+| D-3 | Apply mode-specific delivery promises where Ocean lateness persists in live data |
+| D-4 | Retrain when rolling 28-day forecast coverage falls below 90% or feature drift PSI exceeds 0.20 |
+
+_For the full argument, tables, figures and appendices, see the [Week 4 report](weeks/week4/reports/Week4_Decision_Support_Report.pdf)._
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- REPOSITORY LAYOUT -->
+## Repository Layout
 
 ```
 virtualinternship1/
-├── Makefile                 # delegates: make week1 / week2 / ...
-├── README.md                # this file
+├── .github/workflows/ci.yml
+├── Makefile
+├── README.md
 └── weeks/
-    ├── week1/               # strategy, pipeline, diagrams, submitted .docx
-    │   ├── config/          # schema contract
-    │   ├── data/            # raw (seeded, committed) and processed (generated)
-    │   ├── docs/            # report source, source register, dictionary, decisions
-    │   ├── reports/         # generated quality report, submitted docx + pdf
-    │   ├── src/             # ingest, clean, validate, run, figures, docx build
+    ├── week1/               # preprocessing blueprint
+    │   ├── config/          #   schema contract (schema.yml)
+    │   ├── data/            #   raw and processed shipments, manifest
+    │   ├── docs/            #   blueprint, data dictionary, decision log, sources, figures
+    │   ├── reports/         #   data quality report, report .docx and .pdf
+    │   ├── src/             #   ingest, clean, validate, run_pipeline, make_figures, build_report
     │   └── tests/
-    ├── week2/
-    ├── week3/
-    └── week4/
-        ├── config/          # model and decision constants
-        ├── data/            # raw (seeded, committed) and processed (generated)
-        ├── docs/            # audit, rubric, decisions, reproducibility, week readme
-        ├── reports/         # decision-support report, figures, submission description
-        ├── results/         # single source of numbers (results.json, figure paths)
-        ├── src/             # clean, features, models, metrics, decision support, figures, report, audit
-        └── tests/           # week 4 test suite
+    ├── week2/               # exploratory analysis
+    │   ├── data/            #   external (BTS), simulated, processed
+    │   ├── figures/         #   15 figures, incl. an interactive Plotly chart
+    │   ├── notebooks/       #   week2_eda.ipynb
+    │   ├── reports/         #   report .docx and .pdf
+    │   ├── results/         #   JSON results (profile, tests, outliers, time series, ...)
+    │   └── src/             #   generate_data, fetch_real_data, clean, analyze, audit, make_figures, ...
+    ├── week3/               # forecasting and late-delivery models
+    │   ├── docs/            #   leakage review
+    │   ├── figures/         #   10 figures
+    │   ├── reports/         #   report .docx and .pdf
+    │   ├── results/         #   metrics.json, feature_manifest.json
+    │   ├── src/             #   features, models, run_pipeline, make_figures, build_report
+    │   └── tests/
+    └── week4/               # decision support report
+        ├── docs/            #   audit, decisions, leakage review, reproducibility, rubric
+        ├── reports/         #   report .docx and .pdf, 13 figures, emitted_numbers.json
+        ├── results/         #   results.json
+        ├── src/             #   features, models, decision_support, metrics, run_pipeline,
+        │                    #   build_report, audit_report_numbers, figure_qa, ...
+        └── tests/
 ```
 
-## Running week 1
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```bash
-cd weeks/week1
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+<!-- ROADMAP -->
+## Roadmap
 
-python -m src.run_pipeline    # clean, validate, publish, regenerate the report
-python -m pytest -q           # 19 tests
-python -m src.build_report    # rebuild the .docx (needs pandoc + libreoffice)
-```
+- [x] Week 1: preprocessing blueprint and schema contract
+- [x] Week 2: exploratory analysis and visualization
+- [x] Week 3: predictive modelling and forecasting
+- [x] Week 4: decision support report with automated number audit
 
-Or from the repository root: `make week1` or `make week2`. Week 2 needs a
-Chrome build once for plotly's static export (`plotly_get_chrome -y`); its PDF
-is rendered with LibreOffice and compressed with Ghostscript.
+See the [open issues](https://github.com/mishtiiikrishnaa/virtualinternship1/issues) for a full list of
+proposed features and known issues.
 
-## Running week 3
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```bash
-cd weeks/week3
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+<!-- CONTRIBUTING -->
+## Contributing
 
-python -m src.run_pipeline    # build features, models, figures, results, report
-python -m pytest -q           # 13 tests
-python -m src.build_report     # rebuild the .docx (no pandoc; LibreOffice only for the optional PDF proof)
-```
+This is individual internship coursework, so pull requests are not expected. Suggestions and bug reports are
+welcome: please open an issue with the `bug` or `enhancement` tag.
 
-Or from the repository root: `make week3`.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Running week 4
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
 
-```bash
-cd weeks/week4
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template) for this README's structure
+* [Bureau of Transportation Statistics](https://www.bts.gov/) for the North American transborder freight data used in Week 2
+* [Img Shields](https://shields.io) for the badges
 
-python -m src.run_pipeline     # clean audit, models, metrics, decisions, results, figures
-python -m pytest -q            # 15 tests
-python -m src.build_report     # rebuild the .docx from results/results.json
-python -m src.audit_report_numbers   # fail the build on any unmatched number
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Or from the repository root: `make week4`.
-```
-
-The week 4 pipeline is re-run from a clean environment on every build, and
-the number audit compares every numeric token in the document against
-`weeks/week4/results/results.json`, failing the build when a number cannot be
-matched. The full reproducibility record lives in
-[`weeks/week4/docs/reproducibility.md`](weeks/week4/docs/reproducibility.md).
-
-## Headline results
-
-Week 4 closed the loop between cleaning, forecasting, triage and decisions.
-On the week 1 development extract, the ridge forecast reached a test mean
-absolute error of 2.8 shipments per day against a naive lag-1 forecast of 3.5,
-an interval half width of about 6.8 shipments per day, and an empirical
-coverage of 92.9 percent. The late-delivery classifier at the cost-weighted
-threshold of 0.05 reached a recall of 46.7 percent at a precision of 11.7
-percent, with an expected cost of 1,500 dollars per missed late shipment and 60
-dollars per wasted escalation. Its Brier score is 0.025 against a base-rate
-Brier of 0.017 with a negative Brier skill, so the probabilities are ranking
-scores rather than calibrated probabilities.
-
-## How the numbers are guaranteed to match the code
-
-Every number in the week 4 report is read from
-[`weeks/week4/results/results.json`](weeks/week4/results/results.json) by
-`weeks/week4/src/build_report.py`, and `weeks/week4/src/audit_report_numbers.py`
-extracts every numeric token from the built document and checks it against that
-file or an explicit allowlist. The build fails on any unmatched number, and the
-pipeline writes results from computed values only.
-
-## Built with
-
-Python 3, pandas, numpy, scikit-learn, scipy, matplotlib, seaborn, python-docx,
-pytest, and LibreOffice for the PDF render.
-
-## Why one repository
-
-The internship asks for a single project URL, and splitting four weeks across
-four repositories would make the progression invisible — the interesting part
-of this work is that the week 2 dataset arrives with week 1's contract already
-in place, and the diff shows what the contract had to learn. One repository
-with one folder per week keeps that diff readable.
+<!-- MARKDOWN LINKS & IMAGES -->
+[stars-shield]: https://img.shields.io/github/stars/mishtiiikrishnaa/virtualinternship1.svg?style=for-the-badge
+[stars-url]: https://github.com/mishtiiikrishnaa/virtualinternship1/stargazers
+[issues-shield]: https://img.shields.io/github/issues/mishtiiikrishnaa/virtualinternship1.svg?style=for-the-badge
+[issues-url]: https://github.com/mishtiiikrishnaa/virtualinternship1/issues
+[commit-shield]: https://img.shields.io/github/last-commit/mishtiiikrishnaa/virtualinternship1.svg?style=for-the-badge
+[commit-url]: https://github.com/mishtiiikrishnaa/virtualinternship1/commits/main
+[python-shield]: https://img.shields.io/badge/python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white
+[python-url]: https://www.python.org/
+[pandas-shield]: https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white
+[pandas-url]: https://pandas.pydata.org/
+[numpy-shield]: https://img.shields.io/badge/numpy-013243?style=for-the-badge&logo=numpy&logoColor=white
+[numpy-url]: https://numpy.org/
+[sklearn-shield]: https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white
+[sklearn-url]: https://scikit-learn.org/
+[mpl-shield]: https://img.shields.io/badge/matplotlib-11557C?style=for-the-badge
+[mpl-url]: https://matplotlib.org/
+[plotly-shield]: https://img.shields.io/badge/plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white
+[plotly-url]: https://plotly.com/python/
+[jupyter-shield]: https://img.shields.io/badge/jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white
+[jupyter-url]: https://jupyter.org/
+[pytest-shield]: https://img.shields.io/badge/pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white
+[pytest-url]: https://pytest.org/
