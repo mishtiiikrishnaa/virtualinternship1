@@ -63,6 +63,8 @@ FIG = {
 
 HALF_WIDTH = (F["ridge"]["interval_upper"][0] - F["ridge"]["interval_lower"][0]) / 2.0
 TOD = 0.05
+CAP_CHOSEN = next((pp for pp in CAP_SWEEP["policies"] if pp["policy"] == "Forecast + 1 residual sd"), CAP_SWEEP["policies"][0])
+CAP_NINETY = next((pp for pp in CAP_SWEEP["policies"] if pp["policy"] == "Forecast + 95% bound"), None)
 
 TOKEN_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
 EMITTED_VALUES: set[float] = set()
@@ -216,12 +218,12 @@ def executive_summary(r: Report) -> None:
     ])
     r.h2("Recommendations")
     r.numbered([
-        f"Plan next-day dispatch capacity at the point forecast plus the 95% prediction interval upper bound ({num(HALF_WIDTH, 1)} buffer); "
-        f"the capacity sweep shows this policy reduces shortfall from 41.9 to 6.1 shipment-days while holding 6.8 unused units/day (break-even ratio 4.31:1).",
+        f"Plan next-day dispatch capacity against the forecast plus one residual standard deviation (chosen capacity policy "
+        f"{money(CAP_CHOSEN['total_capacity_cost_usd'])}, reducing under-capacity days to {CAP_CHOSEN['under_capacity_days']} of 28, leaving the 95% bound ({money(CAP_NINETY['total_capacity_cost_usd'])}) as the service-level alternative);",
         f"Deploy expeditor triage at risk score threshold {num(TOD, 2)}, carrying a point estimate of {money(POLICY['saving'])} in net policy savings "
         f"with a 95% bootstrap CI of {money(HEADLINE['triage_saving_ci_95'][0])} to {money(HEADLINE['triage_saving_ci_95'][1])}; test outputs are exploratory.",
-        f"This threshold is recommended over validation cost-optimal t*=0.50, which suppresses all alarms due to small validation sample size and produces zero recall on test.",
-        f"Enforce mode-specific service promises; Ocean lanes underperform the network baseline on-time rate by {num(EDA['carrier_gap_extract_pp'], 1)} percentage points (extract carrier range 93.5% to 100% on-time).",
+        "Treat this threshold choice as provisional: on a validation set of 8 late shipments the classifier caught none at either 0.05 or 0.50, so the test recall of 46.7% is an exploratory figure, not an expected saving.",
+        "Enforce mode-specific service promises only if the same Ocean-only lateness pattern reappears in live data with Wilson intervals below the network baseline, because the refreshed extract data is seeded.",
         f"Establish automated retraining triggers when rolling 28-day forecast coverage falls below 90% (about 16% false-alarm rate for a well-calibrated 95% model, per the binomial assumption) or feature drift PSI exceeds 0.20.",
     ])
     r.p(
@@ -360,12 +362,12 @@ def section_4(r: Report) -> None:
         width=12.0,
     )
     r.p(
-        "To select an operational capacity policy, six dispatch rules were evaluated over the 28-day test period. "
+        "To select an operational capacity policy, seven capacity rules were evaluated over the 28-day test period. "
         "Table 1 outlines under-capacity shortfall shipment-days, average unused capacity per day, and total policy costs "
         "assuming a $150 penalty per shortfall unit and $30 per unused reservation unit (5:1 ratio)."
     )
     r.table(
-        ["Policy", "Shortfall days", "Shortfall units", "Avg unused/day", "Total capacity cost"],
+        ["Policy", "Under-capacity days", "Shortfall units (shipment-days)", "Avg unused/day", "Total capacity cost"],
         [
             [p["policy"], f"{p['under_capacity_days']}/28", f"{p['shortfall_shipment_days']:.1f}", f"{p['avg_unused_capacity_per_day']:.2f}", money(p['total_capacity_cost_usd'])]
             for p in CAP_SWEEP["policies"]
@@ -375,15 +377,15 @@ def section_4(r: Report) -> None:
     _best = min(CAP_SWEEP["policies"], key=lambda pp: pp["total_capacity_cost_usd"])
     _worst = CAP_SWEEP["policies"][0]
     _fine = CAP_SWEEP["policies"][3]
+    _chosen = CAP_CHOSEN
+    _alt = CAP_NINETY
     r.p(
-        f"At the assumed 5:1 unit-cost ratio ($150 per shortfall unit, $30 per unused reservation), the lowest-cost "
-        f"policy is {_best['policy']} at {money(_best['total_capacity_cost_usd'])}, with "
-        f"{_best['under_capacity_days']} under-capacity days out of 28 against {_worst['under_capacity_days']} for the "
-        f"point forecast. The shortfall column and the budget are both in shipment-days: 13 of 28 days versus one and "
-        f"two days miscount a shipment as a day of delay. The Forecast + 95% bound costs "
-        f"{money(_fine['total_capacity_cost_usd'])} ({money(_fine['total_capacity_cost_usd'] - _best['total_capacity_cost_usd'])} "
-        f"more than the optimum) but cuts under-capacity days to {_fine['under_capacity_days']} of 28. Adopting it is a "
-        f"service-promise decision, not the cost-minimising decision."
+        f"At the assumed 5:1 unit-cost ratio ($150 per shortfall unit, $30 per unused reservation) the cheapest "
+        f"forecast-based dispatch policy is {_chosen['policy']} at {money(_chosen['total_capacity_cost_usd'])}, with "
+        f"{_chosen['under_capacity_days']} under-capacity days out of 28. The 95% prediction interval bound costs "
+        f"{money(_alt['total_capacity_cost_usd'])} ({money(_alt['total_capacity_cost_usd'] - _chosen['total_capacity_cost_usd'])} "
+        f"more) and cuts under-capacity days to {_alt['under_capacity_days']} of 28, so it is retained only as an "
+        f"explicit service-level alternative. The fixed-buffer rows are baselines, not forecast policies."
     )
     figure(
         r, "fig12",
@@ -459,7 +461,7 @@ def section_5(r: Report) -> None:
     r.h1("5. Integrated argument")
     r.p(
         "The empirical findings form an interconnected operational chain. Capacity planning relies on next-day ridge forecasting "
-        "with a 95% prediction interval buffer to absorb daily volume volatility (reducing shortfall from 41.9 to 6.1 shipment-days). "
+        "with the chosen forecast-plus-one-residual-standard-deviation rule, leaving four under-capacity days out of 28 (95% interval bound retained as a service alternative). "
         "In parallel, risk scoring identifies vulnerable shipments at booking time, routing the top 7.1% of shipments to proactive "
         "expediting under threshold 0.05 (capturing 46.7% of late events and generating $6,900 net savings). Finally, mode and lane "
         "disparities dictate service promise governance, isolating Ocean transit variability from baseline operations."
@@ -490,16 +492,16 @@ def section_6(r: Report) -> None:
         [
             [
                 d["decision_id"],
-                f"{d['decision'][:45]}...\nTrigger: {d['trigger_threshold']}",
+                f"{d['decision']}\nTrigger: {d['trigger_threshold']}",
                 d["action"],
                 d["owner"],
                 d["expected_impact_range"]["low"],
-                d["cost_of_wrong_call"][:65] + "...",
+                d["cost_of_wrong_call"],
                 d["review_cadence"],
             ]
             for d in R["decisions"]["register"]
         ],
-        widths=[1.5, 4.0, 3.0, 2.0, 3.5, 3.0, 2.0], font_size=7.5,
+        widths=[1.0, 3.6, 2.8, 1.6, 3.2, 3.2, 1.8], font_size=7.0,
     )
 
 
@@ -549,8 +551,8 @@ def section_7(r: Report) -> None:
         "Triage policy net savings sensitivity grid across FN and FP multipliers.",
         "Heatmap showing net dollar savings for threshold t=0.05 across 25 cost combinations.",
         "to delineate the financial boundaries under which automated triage remains value-accretive.",
-        "The model posts a positive saving in 19 of the 25 cells; the six negative cells are those where the "
-        "false-negative to false-positive cost ratio (0.25x / 1.0x and below baseline ratios) sits under the 8.57:1 break-even.",
+        "The rule is exact: a cell is positive exactly when its false-negative to false-positive cost ratio is above "
+        f"the 8.57:1 break-even, so six cells (cost ratios 1.56, 3.13, 3.13, 6.25, 6.25, 6.25) are negative.",
         width=11.5,
     )
 
@@ -649,8 +651,10 @@ def appendix(r: Report) -> None:
     r.p(
         "Ridge regression: L2 regularization alpha tuned over {0.1, 1.0, 10.0, 100.0, 1000.0} on standardized lag features. "
         "HistGradientBoostingClassifier: max_iter=200, learning_rate=0.05, class_weight='balanced', random_state=42. "
-        "Operational threshold t=0.05 was selected to maintain detection recall on test, outperforming the validation cost-optimal "
-        "threshold t*=0.50 which collapsed recall to 0% due to an underpowered validation set."
+        "Operational threshold t=0.05 was selected after seeing the test results (post-hoc), not by rolling-origin CV or a "
+        "pre-declared review capacity; the validation window contained 8 late shipments of which the classifier detected 0, "
+        "for a validation recall of 0.0% (Wilson CI 0.0% to 30.2%). Consequently the reported test recall of 46.7% "
+        "(24.8% to 69.9%, 7 of 15) is exploratory and the net saving is only a $6,900 point estimate (CI $0 to $14,641)."
     )
     r.h1("Appendix B – Key implementation code snippets")
     r.p("The decision support pipeline is modularized into dedicated scripts. Five key snippets are documented below.")

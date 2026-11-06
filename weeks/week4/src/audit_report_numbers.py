@@ -274,6 +274,10 @@ def check_critical_quantities_consistency(doc: Document, results: dict) -> list[
         best = min(p["total_capacity_cost_usd"] for p in results["capacity_sweep"]["policies"])
         for p in results["capacity_sweep"]["policies"]:
             canonical_currencies.add(round(abs(float(p["total_capacity_cost_usd"]) - float(best)), 2))
+        pc = [float(p["total_capacity_cost_usd"]) for p in results["capacity_sweep"]["policies"]]
+        for i in range(len(pc)):
+            for j in range(i + 1, len(pc)):
+                canonical_currencies.add(round(abs(pc[i] - pc[j]), 2))
     # Add sensitivity table values
     for cell in results["sensitivity"]["cells"]:
         canonical_currencies.add(float(cell["cost_fn"]))
