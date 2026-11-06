@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Sequence
 
 import numpy as np
+from scipy import stats
 from sklearn.metrics import (
     accuracy_score,
     average_precision_score,
@@ -20,6 +21,18 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
+
+
+def wilson_interval(k: int, n: int, confidence: float = 0.95) -> tuple[float, float]:
+    """Wilson score interval with continuity correction / asymptotic formulation for a binomial proportion."""
+    if n <= 0:
+        return 0.0, 0.0
+    p = float(k) / float(n)
+    z = float(stats.norm.ppf(1.0 - (1.0 - confidence) / 2.0))
+    denom = 1.0 + (z**2) / n
+    centre = (p + (z**2) / (2.0 * n)) / denom
+    margin = (z * np.sqrt(p * (1.0 - p) / n + (z**2) / (4.0 * (n**2)))) / denom
+    return max(0.0, float(centre - margin)), min(1.0, float(centre + margin))
 
 
 def confusion_stats(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
@@ -118,19 +131,19 @@ def cost_weighted_metrics(
 ) -> dict:
     """Expected cost of a decision rule under explicit FP and FN costs.
 
-    cost_false_negative: cost of a missed late shipment (a broken promise).
-    cost_false_positive: cost of a wasted triage escalation (an on-time
-    shipment pulled into an expeditor's queue).
+    The escalation cost applies to every flagged shipment (true positives and
+    false positives), and missed late shipments incur the full false negative cost.
     """
     pred = (np.asarray(proba) >= threshold).astype(int)
     tn, fp, fn, tp = confusion_matrix(np.asarray(y_true), pred).ravel()
-    rule_cost = cost_false_positive * fp + cost_false_negative * fn
-    # baseline policies expressed in the same units
-    no_triage_cost = cost_false_negative * int(np.asarray(y_true).sum())  # every late missed
-    triage_all_cost = cost_false_positive * int((pred == 1).sum())        # every shipment escalated
+    flagged = int(tp) + int(fp)
+    missed = int(fn)
+    rule_cost = cost_false_positive * flagged + cost_false_negative * missed
+    no_triage_cost = cost_false_negative * int(np.asarray(y_true).sum())
+    triage_all_cost = cost_false_positive * int(len(y_true))
     return {
         "threshold": float(threshold),
-        "predicted_positive": int((pred == 1).sum()),
+        "predicted_positive": flagged,
         "true_positive": int(tp),
         "false_negative": int(fn),
         "false_positive": int(fp),
@@ -141,6 +154,7 @@ def cost_weighted_metrics(
         "expected_cost_rule": float(rule_cost),
         "expected_cost_no_triage": float(no_triage_cost),
         "expected_cost_triage_all": float(triage_all_cost),
+        "expected_cost_saving": float(no_triage_cost - rule_cost),
         "cost_of_missed_late": float(cost_false_negative),
         "cost_of_wasted_triage": float(cost_false_positive),
     }
@@ -234,6 +248,72 @@ def policy_costs(
         "n_shipments": int(len(y_true)),
         "n_flagged": flagged,
         "n_missed": missed,
+        "saving": float(cost_false_negative * int(np.asarray(y_true).sum()) - (cost_per_action * flagged + cost_false_negative * missed)),
         "cost_of_missed_late_shipments": float(cost_false_negative),
         "cost_of_wasted_triage": float(cost_per_action),
     }
+
+
+def bootstrap_saving_and_auc(
+    y_true: np.ndarray, proba: np.ndarray, threshold: float,
+    cost_fn: float, cost_fp: float, n_boot: int = 2000, seed: int = 42,
+) -> dict:
+    """Seeded non-parametric bootstrap (2,000 resamples) for triage saving and ROC-AUC."""
+    rng = np.random.default_rng(seed)
+    y_true = np.asarray(y_true, dtype=int)
+    proba = np.asarray(proba, dtype=float)
+    n = len(y_true)
+    savings = []
+    aucs = []
+
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, n)
+        y_b = y_true[idx]
+        p_b = proba[idx]
+        pred_b = (p_b >= threshold).astype(int)
+        flagged = int(pred_b.sum())
+        fn = int(((pred_b == 0) & (y_b == 1)).sum())
+        no_triage = cost_fn * int(y_b.sum())
+        policy = cost_fp * flagged + cost_fn * fn
+        savings.append(no_triage - policy)
+        if len(np.unique(y_b)) > 1:
+            aucs.append(roc_auc_score(y_b, p_b))
+
+    s_low, s_mid, s_high = np.percentile(savings, [2.5, 50.0, 97.5])
+    s_p10, s_p50, s_p90 = np.percentile(savings, [10.0, 50.0, 90.0])
+    auc_low, auc_mid, auc_high = np.percentile(aucs, [2.5, 50.0, 97.5])
+
+    return {
+        "n_boot": n_boot,
+        "seed": seed,
+        "saving_mean": float(np.mean(savings)),
+        "saving_ci_95": [float(s_low), float(s_high)],
+        "saving_percentiles": {"p10": float(s_p10), "p50": float(s_p50), "p90": float(s_p90)},
+        "roc_auc_mean": float(np.mean(aucs)),
+        "roc_auc_ci_95": [float(auc_low), float(auc_high)],
+    }
+
+
+def quantile_bin_reliability(y_true: np.ndarray, proba: np.ndarray, n_bins: int = 5) -> list[dict]:
+    """Quantile-binned reliability evaluation with sample counts and Wilson intervals."""
+    y_true = np.asarray(y_true, dtype=int)
+    proba = np.asarray(proba, dtype=float)
+    import pandas as pd
+    df = pd.DataFrame({"y": y_true, "p": proba})
+    df["qbin"] = pd.qcut(df["p"], q=n_bins, duplicates="drop")
+    rows = []
+    for qb, grp in df.groupby("qbin", observed=False):
+        n = int(len(grp))
+        k = int(grp["y"].sum())
+        obs = float(k / n) if n > 0 else 0.0
+        ci_lo, ci_hi = wilson_interval(k, n, confidence=0.95)
+        rows.append({
+            "bin": str(qb),
+            "n": n,
+            "late_events": k,
+            "mean_score": float(grp["p"].mean()),
+            "observed_rate": obs,
+            "ci_95": [ci_lo, ci_hi],
+        })
+    return rows
+

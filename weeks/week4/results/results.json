@@ -195,11 +195,20 @@
     ],
     "disruption_on_time": 0.714,
     "disruption_baseline_on_time": 0.831,
-    "total_spend_usd": 319321700.0,
+    "extract_freight_spend_usd": 2580671.73,
+    "extract_median_cost_usd": 209.36,
     "cost_explained_r2": 0.9537,
     "weight_elasticity": 0.8009,
-    "carrier_gap_pp": 31.3,
-    "top_carrier": "Ironline Rail",
+    "carrier_gap_extract_pp": 6.1,
+    "carrier_on_time_extract": {
+      "Atlas Roadways": 1.0,
+      "Kestrel Container Co": 0.9345637583892618,
+      "Nimbus Air Cargo": 1.0,
+      "Northstar Haulage": 1.0,
+      "Poseidon Line": 0.946236559139785,
+      "Vantage Skyfreight": 1.0,
+      "Vulcan Rail Freight": 1.0
+    },
     "descriptive": {
       "variables": {
         "transit_days": {
@@ -630,8 +639,8 @@
     "gradient_boosting_learning_rate": 0.05,
     "gradient_boosting_class_weight": "balanced",
     "seed": 42,
-    "conformal_level": 0.9,
-    "triage_threshold": 0.05
+    "triage_threshold": 0.05,
+    "val_cost_optimal_threshold": 0.5
   },
   "forecast": {
     "naive": {
@@ -6348,18 +6357,64 @@
     "brier_score": 0.024965372846857833,
     "calibration_slope": 0.11526471501587394,
     "baseline_brier": 0.017315634747811726,
-    "brier_skill": -0.441782135651299
-  },
-  "conformal": {
-    "level": 0.9,
-    "quantile": 0.030007122029246335,
-    "coverage": {
-      "level": 0.9,
-      "quantile": 0.030007122029246335,
-      "n": 851,
-      "covered": 769,
-      "coverage": 0.9036427732079906
-    }
+    "brier_skill": -0.441782135651299,
+    "quantile_bins": [
+      {
+        "bin": "(-0.0009958200000000001, 2.93e-05]",
+        "n": 171,
+        "late_events": 0,
+        "mean_score": 2.3726027127386447e-05,
+        "observed_rate": 0.0,
+        "ci_95": [
+          0.0,
+          0.021971097968438207
+        ]
+      },
+      {
+        "bin": "(2.93e-05, 3.82e-05]",
+        "n": 170,
+        "late_events": 0,
+        "mean_score": 3.3569921558814404e-05,
+        "observed_rate": 0.0,
+        "ci_95": [
+          0.0,
+          0.022097483803655452
+        ]
+      },
+      {
+        "bin": "(3.82e-05, 5.44e-05]",
+        "n": 170,
+        "late_events": 0,
+        "mean_score": 4.5127640238098624e-05,
+        "observed_rate": 0.0,
+        "ci_95": [
+          0.0,
+          0.022097483803655452
+        ]
+      },
+      {
+        "bin": "(5.44e-05, 0.00213]",
+        "n": 170,
+        "late_events": 2,
+        "mean_score": 0.0003510866056542211,
+        "observed_rate": 0.011764705882352941,
+        "ci_95": [
+          0.0032322581446411133,
+          0.04187469662834009
+        ]
+      },
+      {
+        "bin": "(0.00213, 0.986]",
+        "n": 170,
+        "late_events": 13,
+        "mean_score": 0.1136362982403552,
+        "observed_rate": 0.07647058823529412,
+        "ci_95": [
+          0.04523178053975242,
+          0.12642726456452041
+        ]
+      }
+    ]
   },
   "coverage": {
     "forecast_interval": {
@@ -6367,28 +6422,89 @@
       "covered": 26,
       "n": 28,
       "coverage": 0.9285714285714286,
-      "mean_width": 13.599554993633761
+      "mean_width": 13.599554993633761,
+      "coverage_ci_95": [
+        0.7735463743160095,
+        0.9801879358846942
+      ]
     }
+  },
+  "capacity_sweep": {
+    "cost_shortfall_per_unit": 150.0,
+    "cost_unused_per_unit": 30.0,
+    "cost_ratio_assumed": 5.0,
+    "break_even_cost_ratio": 4.31,
+    "avoided_shortfall_units_95_vs_point": 35.83,
+    "added_unused_units_95_vs_point": 154.56,
+    "policies": [
+      {
+        "policy": "Point forecast",
+        "under_capacity_days": 13,
+        "total_days": 28,
+        "shortfall_shipment_days": 41.88,
+        "avg_unused_capacity_per_day": 1.3,
+        "total_unused_units": 36.46,
+        "total_capacity_cost_usd": 7376.52
+      },
+      {
+        "policy": "Forecast + 1 residual sd",
+        "under_capacity_days": 4,
+        "total_days": 28,
+        "shortfall_shipment_days": 14.37,
+        "avg_unused_capacity_per_day": 3.79,
+        "total_unused_units": 106.09,
+        "total_capacity_cost_usd": 5338.53
+      },
+      {
+        "policy": "Forecast + 80% bound",
+        "under_capacity_days": 3,
+        "total_days": 28,
+        "shortfall_shipment_days": 10.96,
+        "avg_unused_capacity_per_day": 4.65,
+        "total_unused_units": 130.07,
+        "total_capacity_cost_usd": 5546.8
+      },
+      {
+        "policy": "Forecast + 95% bound",
+        "under_capacity_days": 2,
+        "total_days": 28,
+        "shortfall_shipment_days": 6.05,
+        "avg_unused_capacity_per_day": 6.82,
+        "total_unused_units": 191.02,
+        "total_capacity_cost_usd": 6637.74
+      },
+      {
+        "policy": "Fixed (train mean)",
+        "under_capacity_days": 14,
+        "total_days": 28,
+        "shortfall_shipment_days": 42.02,
+        "avg_unused_capacity_per_day": 1.32,
+        "total_unused_units": 36.98,
+        "total_capacity_cost_usd": 7412.46
+      },
+      {
+        "policy": "Fixed (train mean + 1 sd)",
+        "under_capacity_days": 3,
+        "total_days": 28,
+        "shortfall_shipment_days": 13.66,
+        "avg_unused_capacity_per_day": 3.85,
+        "total_unused_units": 107.8,
+        "total_capacity_cost_usd": 5283.58
+      },
+      {
+        "policy": "Fixed (train mean + 1.96 sd)",
+        "under_capacity_days": 2,
+        "total_days": 28,
+        "shortfall_shipment_days": 5.98,
+        "avg_unused_capacity_per_day": 6.98,
+        "total_unused_units": 195.32,
+        "total_capacity_cost_usd": 6755.85
+      }
+    ]
   },
   "cost": {
     "false_negative_usd": 1500.0,
     "false_positive_usd": 60.0,
-    "metrics": {
-      "threshold": 0.05,
-      "predicted_positive": 60,
-      "true_positive": 7,
-      "false_negative": 8,
-      "false_positive": 53,
-      "true_negative": 783,
-      "precision": 0.11666666666666667,
-      "recall": 0.4666666666666667,
-      "f1": 0.18666666666666668,
-      "expected_cost_rule": 15180.0,
-      "expected_cost_no_triage": 22500.0,
-      "expected_cost_triage_all": 3600.0,
-      "cost_of_missed_late": 1500.0,
-      "cost_of_wasted_triage": 60.0
-    },
     "policy_costs": {
       "no_triage": 22500.0,
       "triage_all": 51060.0,
@@ -6403,6 +6519,7 @@
       "n_shipments": 851,
       "n_flagged": 60,
       "n_missed": 8,
+      "saving": 6900.0,
       "cost_of_missed_late_shipments": 1500.0,
       "cost_of_wasted_triage": 60.0
     }
@@ -6465,6 +6582,370 @@
         "recall": 0.0,
         "f1": 0.0
       }
+    ],
+    "comparison_t05_vs_t50": {
+      "t05": {
+        "threshold": 0.05,
+        "confusion": {
+          "tn": 783,
+          "fp": 53,
+          "fn": 8,
+          "tp": 7
+        },
+        "flagged": 60,
+        "missed": 8,
+        "recall": 0.4666666666666667,
+        "recall_ci_95": [
+          0.24809535365737387,
+          0.698830199745016
+        ],
+        "precision": 0.11666666666666667,
+        "precision_ci_95": [
+          0.0576772064005603,
+          0.2217878802417086
+        ],
+        "policy_cost": 15600.0,
+        "no_triage_cost": 22500.0,
+        "triage_all_cost": 51060.0,
+        "saving_vs_no_triage": 6900.0
+      },
+      "t50": {
+        "threshold": 0.5,
+        "confusion": {
+          "tn": 826,
+          "fp": 10,
+          "fn": 15,
+          "tp": 0
+        },
+        "flagged": 10,
+        "missed": 15,
+        "recall": 0.0,
+        "recall_ci_95": [
+          0.0,
+          0.20388330103584862
+        ],
+        "precision": 0.0,
+        "precision_ci_95": [
+          0.0,
+          0.2775327998628892
+        ],
+        "policy_cost": 23100.0,
+        "no_triage_cost": 22500.0,
+        "triage_all_cost": 51060.0,
+        "saving_vs_no_triage": -600.0
+      },
+      "val_expected_cost_t05": 14520.0,
+      "val_expected_cost_t50": 12300.0
+    }
+  },
+  "sensitivity": {
+    "base_fn_usd": 1500.0,
+    "base_fp_usd": 60.0,
+    "base_cost_ratio": 25.0,
+    "break_even_cost_ratio_t05": 8.57,
+    "break_even_formula": "Saving = 7 * cost_fn - 60 * cost_fp > 0  =>  cost_fn / cost_fp > 8.57",
+    "flips_summary": "Model triage stops beating no-triage when FN/FP ratio <= 8.57 (flipped in 6/25 cells).",
+    "cells": [
+      {
+        "fn_mult": 0.25,
+        "fp_mult": 0.25,
+        "cost_fn": 375.0,
+        "cost_fp": 15.0,
+        "cost_ratio": 25.0,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -150.0,
+        "saving_fixed_t05": 1725.0,
+        "policy_cost_fixed_t05": 3900.0,
+        "no_triage_cost": 5625.0
+      },
+      {
+        "fn_mult": 0.25,
+        "fp_mult": 0.5,
+        "cost_fn": 375.0,
+        "cost_fp": 30.0,
+        "cost_ratio": 12.5,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -300.0,
+        "saving_fixed_t05": 825.0,
+        "policy_cost_fixed_t05": 4800.0,
+        "no_triage_cost": 5625.0
+      },
+      {
+        "fn_mult": 0.25,
+        "fp_mult": 1.0,
+        "cost_fn": 375.0,
+        "cost_fp": 60.0,
+        "cost_ratio": 6.25,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -600.0,
+        "saving_fixed_t05": -975.0,
+        "policy_cost_fixed_t05": 6600.0,
+        "no_triage_cost": 5625.0
+      },
+      {
+        "fn_mult": 0.25,
+        "fp_mult": 2.0,
+        "cost_fn": 375.0,
+        "cost_fp": 120.0,
+        "cost_ratio": 3.125,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -1200.0,
+        "saving_fixed_t05": -4575.0,
+        "policy_cost_fixed_t05": 10200.0,
+        "no_triage_cost": 5625.0
+      },
+      {
+        "fn_mult": 0.25,
+        "fp_mult": 4.0,
+        "cost_fn": 375.0,
+        "cost_fp": 240.0,
+        "cost_ratio": 1.5625,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -2400.0,
+        "saving_fixed_t05": -11775.0,
+        "policy_cost_fixed_t05": 17400.0,
+        "no_triage_cost": 5625.0
+      },
+      {
+        "fn_mult": 0.5,
+        "fp_mult": 0.25,
+        "cost_fn": 750.0,
+        "cost_fp": 15.0,
+        "cost_ratio": 50.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 5520.0,
+        "saving_fixed_t05": 4350.0,
+        "policy_cost_fixed_t05": 6900.0,
+        "no_triage_cost": 11250.0
+      },
+      {
+        "fn_mult": 0.5,
+        "fp_mult": 0.5,
+        "cost_fn": 750.0,
+        "cost_fp": 30.0,
+        "cost_ratio": 25.0,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -300.0,
+        "saving_fixed_t05": 3450.0,
+        "policy_cost_fixed_t05": 7800.0,
+        "no_triage_cost": 11250.0
+      },
+      {
+        "fn_mult": 0.5,
+        "fp_mult": 1.0,
+        "cost_fn": 750.0,
+        "cost_fp": 60.0,
+        "cost_ratio": 12.5,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -600.0,
+        "saving_fixed_t05": 1650.0,
+        "policy_cost_fixed_t05": 9600.0,
+        "no_triage_cost": 11250.0
+      },
+      {
+        "fn_mult": 0.5,
+        "fp_mult": 2.0,
+        "cost_fn": 750.0,
+        "cost_fp": 120.0,
+        "cost_ratio": 6.25,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -1200.0,
+        "saving_fixed_t05": -1950.0,
+        "policy_cost_fixed_t05": 13200.0,
+        "no_triage_cost": 11250.0
+      },
+      {
+        "fn_mult": 0.5,
+        "fp_mult": 4.0,
+        "cost_fn": 750.0,
+        "cost_fp": 240.0,
+        "cost_ratio": 3.125,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -2400.0,
+        "saving_fixed_t05": -9150.0,
+        "policy_cost_fixed_t05": 20400.0,
+        "no_triage_cost": 11250.0
+      },
+      {
+        "fn_mult": 1.0,
+        "fp_mult": 0.25,
+        "cost_fn": 1500.0,
+        "cost_fp": 15.0,
+        "cost_ratio": 100.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 13020.0,
+        "saving_fixed_t05": 9600.0,
+        "policy_cost_fixed_t05": 12900.0,
+        "no_triage_cost": 22500.0
+      },
+      {
+        "fn_mult": 1.0,
+        "fp_mult": 0.5,
+        "cost_fn": 1500.0,
+        "cost_fp": 30.0,
+        "cost_ratio": 50.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 11040.0,
+        "saving_fixed_t05": 8700.0,
+        "policy_cost_fixed_t05": 13800.0,
+        "no_triage_cost": 22500.0
+      },
+      {
+        "fn_mult": 1.0,
+        "fp_mult": 1.0,
+        "cost_fn": 1500.0,
+        "cost_fp": 60.0,
+        "cost_ratio": 25.0,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -600.0,
+        "saving_fixed_t05": 6900.0,
+        "policy_cost_fixed_t05": 15600.0,
+        "no_triage_cost": 22500.0
+      },
+      {
+        "fn_mult": 1.0,
+        "fp_mult": 2.0,
+        "cost_fn": 1500.0,
+        "cost_fp": 120.0,
+        "cost_ratio": 12.5,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -1200.0,
+        "saving_fixed_t05": 3300.0,
+        "policy_cost_fixed_t05": 19200.0,
+        "no_triage_cost": 22500.0
+      },
+      {
+        "fn_mult": 1.0,
+        "fp_mult": 4.0,
+        "cost_fn": 1500.0,
+        "cost_fp": 240.0,
+        "cost_ratio": 6.25,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -2400.0,
+        "saving_fixed_t05": -3900.0,
+        "policy_cost_fixed_t05": 26400.0,
+        "no_triage_cost": 22500.0
+      },
+      {
+        "fn_mult": 2.0,
+        "fp_mult": 0.25,
+        "cost_fn": 3000.0,
+        "cost_fp": 15.0,
+        "cost_ratio": 200.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 28020.0,
+        "saving_fixed_t05": 20100.0,
+        "policy_cost_fixed_t05": 24900.0,
+        "no_triage_cost": 45000.0
+      },
+      {
+        "fn_mult": 2.0,
+        "fp_mult": 0.5,
+        "cost_fn": 3000.0,
+        "cost_fp": 30.0,
+        "cost_ratio": 100.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 26040.0,
+        "saving_fixed_t05": 19200.0,
+        "policy_cost_fixed_t05": 25800.0,
+        "no_triage_cost": 45000.0
+      },
+      {
+        "fn_mult": 2.0,
+        "fp_mult": 1.0,
+        "cost_fn": 3000.0,
+        "cost_fp": 60.0,
+        "cost_ratio": 50.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 22080.0,
+        "saving_fixed_t05": 17400.0,
+        "policy_cost_fixed_t05": 27600.0,
+        "no_triage_cost": 45000.0
+      },
+      {
+        "fn_mult": 2.0,
+        "fp_mult": 2.0,
+        "cost_fn": 3000.0,
+        "cost_fp": 120.0,
+        "cost_ratio": 25.0,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -1200.0,
+        "saving_fixed_t05": 13800.0,
+        "policy_cost_fixed_t05": 31200.0,
+        "no_triage_cost": 45000.0
+      },
+      {
+        "fn_mult": 2.0,
+        "fp_mult": 4.0,
+        "cost_fn": 3000.0,
+        "cost_fp": 240.0,
+        "cost_ratio": 12.5,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -2400.0,
+        "saving_fixed_t05": 6600.0,
+        "policy_cost_fixed_t05": 38400.0,
+        "no_triage_cost": 45000.0
+      },
+      {
+        "fn_mult": 4.0,
+        "fp_mult": 0.25,
+        "cost_fn": 6000.0,
+        "cost_fp": 15.0,
+        "cost_ratio": 400.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 58020.0,
+        "saving_fixed_t05": 41100.0,
+        "policy_cost_fixed_t05": 48900.0,
+        "no_triage_cost": 90000.0
+      },
+      {
+        "fn_mult": 4.0,
+        "fp_mult": 0.5,
+        "cost_fn": 6000.0,
+        "cost_fp": 30.0,
+        "cost_ratio": 200.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 56040.0,
+        "saving_fixed_t05": 40200.0,
+        "policy_cost_fixed_t05": 49800.0,
+        "no_triage_cost": 90000.0
+      },
+      {
+        "fn_mult": 4.0,
+        "fp_mult": 1.0,
+        "cost_fn": 6000.0,
+        "cost_fp": 60.0,
+        "cost_ratio": 100.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 52080.0,
+        "saving_fixed_t05": 38400.0,
+        "policy_cost_fixed_t05": 51600.0,
+        "no_triage_cost": 90000.0
+      },
+      {
+        "fn_mult": 4.0,
+        "fp_mult": 2.0,
+        "cost_fn": 6000.0,
+        "cost_fp": 120.0,
+        "cost_ratio": 50.0,
+        "val_optimal_threshold": 0.005,
+        "saving_val_optimal_t": 44160.0,
+        "saving_fixed_t05": 34800.0,
+        "policy_cost_fixed_t05": 55200.0,
+        "no_triage_cost": 90000.0
+      },
+      {
+        "fn_mult": 4.0,
+        "fp_mult": 4.0,
+        "cost_fn": 6000.0,
+        "cost_fp": 240.0,
+        "cost_ratio": 25.0,
+        "val_optimal_threshold": 0.5,
+        "saving_val_optimal_t": -2400.0,
+        "saving_fixed_t05": 27600.0,
+        "policy_cost_fixed_t05": 62400.0,
+        "no_triage_cost": 90000.0
+      }
     ]
   },
   "decisions": {
@@ -6472,190 +6953,238 @@
       {
         "decision_id": "D-1",
         "question": "how much dispatch buffer / safety stock should operations plan",
-        "decision": "plan capacity at the point forecast plus the upper bound of its prediction interval, refreshed every planning cycle",
-        "trigger_metric": "14-day ahead ridge forecast and its interval",
-        "trigger_threshold": "upper bound = forecast + 1.96 x residual sd (sigma)",
-        "action": "commit dispatch capacity and dock slots against the interval bound",
+        "decision": "commit next-day dispatch capacity and dock slots at the point forecast plus the 95% prediction interval upper bound",
+        "trigger_metric": "next-day ridge demand forecast (lag-1 features; multi-day horizons not validated)",
+        "trigger_threshold": "capacity buffer = forecast + 1.96 * residual sd (half-width 6.8 shipments/day)",
+        "action": "reserve dock slots and dispatch staff against the 95% upper bound buffer",
         "owner": "operations / capacity planning",
         "expected_impact_range": {
-          "low": "avoided under-capacity shipment-days bounded by the interval width",
-          "high": "avoided under-capacity shipment-days from the point forecast alone"
+          "low": "reduces under-capacity shortfall from 41.9 to 6.1 shipment-days (saving 35.8 shortfall units on test)",
+          "high": "incurs 6.8 unused capacity units per day; break-even shortfall-to-unused cost ratio is 4.31:1"
         },
-        "cost_of_wrong_call": "under-planning shows up as under-capacity shipment-days; over-planning as unused capacity",
-        "data_required": "daily shipment volume history and a time-ordered forecast",
-        "review_cadence": "per planning cycle (weekly at most)"
+        "cost_of_wrong_call": "under-planning causes spot freight expedite penalties ($150/unit); over-planning causes idle vehicle reservation waste ($30/unit)",
+        "data_required": "daily order volumes history, next-day booking count and ridge lag-1 features",
+        "review_cadence": "daily dispatch cycle (reviewed weekly)"
       },
       {
         "decision_id": "D-2",
         "question": "which at-risk shipments should an expeditor triage, and at what threshold",
-        "decision": "escalate shipments whose late model probability exceeds the cost-weighted threshold",
-        "trigger_metric": "gradient boosting probability and its conformal interval",
-        "trigger_threshold": "cost-weighted threshold from the validation set",
-        "action": "dispatch expeditor attention; escalate to carrier ops when flagged",
+        "decision": "escalate shipments whose late delivery risk score meets or exceeds the operational threshold of 0.05",
+        "trigger_metric": "gradient boosting late delivery risk score",
+        "trigger_threshold": "risk score >= 0.05 (justified over val-cost-optimal t*=0.50 which shuts triage off)",
+        "action": "dispatch dedicated expeditor triage; escalate to carrier dispatch operations within 2 hours of flagging",
         "owner": "dispatch / customer operations",
         "expected_impact_range": {
-          "low": "expected cost saving from triage of the flagged share",
-          "high": "expected cost saving if the threshold were lowered to recall-optimal"
+          "low": "catches 46.7% of late shipments (7 of 15, 95% CI 24.8% - 69.9%) at precision 11.7% (95% CI 5.8% - 22.2%)",
+          "high": "generates $6,900 net policy saving ($15,600 vs $22,500 no-triage; 95% bootstrap CI $0 - $14,641)"
         },
-        "cost_of_wrong_call": "false negative (missed late) costs the promise; false positive (wasted triage) costs expeditor time",
-        "data_required": "booking-time features plus confirmed delivery outcomes",
-        "review_cadence": "daily triage list refresh; threshold review quarterly"
+        "cost_of_wrong_call": "false negative (missed late) costs $1,500 contractual breach; false positive (wasted triage) costs $60 expeditor time",
+        "data_required": "booking features (mode, origin, destination, weight, category, order-to-ship lag)",
+        "review_cadence": "daily triage queue refresh; threshold and sensitivity review quarterly"
       },
       {
         "decision_id": "D-3",
-        "question": "where should service effort and capacity be concentrated",
-        "decision": "hold mode-specific service-level promises and remediate the weakest carrier-lane pairs before rebalancing volume",
-        "trigger_metric": "late share by mode and carrier-lane on-time rate",
-        "trigger_threshold": "carrier on-time rate below network cluster median",
-        "action": "formal improvement plan for weak carriers; shift discretionary air volume where the promise allows",
-        "owner": "procurement / network planning",
+        "question": "where should service effort and capacity be concentrated across carriers and lanes",
+        "decision": "maintain mode-specific delivery promises and place underperforming carrier lanes on structured remediation plans",
+        "trigger_metric": "lane-level on-time delivery rate for carrier-lane pairs with at least 20 shipments",
+        "trigger_threshold": "carrier lane on-time rate below 95% (extract carrier gap is 6.5 percentage points between ocean and non-ocean)",
+        "action": "issue formal corrective action requests for ocean carriers (Kestrel 93.5%, Poseidon 94.6%); divert urgent cargo to air",
+        "owner": "carrier procurement / network planning",
         "expected_impact_range": {
-          "low": "partial closure of the carrier gap (31.3pp network spread)",
-          "high": "full closure of the two-tier gap"
+          "low": "remediates ocean transit variance (5.4% to 6.5% late rate on ocean vs 0% on road/air)",
+          "high": "protects high-value lanes (e.g. UK to US ocean, 81.8% on-time, n=22, 95% CI 61.5% - 92.7%)"
         },
-        "cost_of_wrong_call": "acting on a lane with insufficient sample size as if it were a real gap",
-        "data_required": "per-lane sample sizes and on-time outcomes",
-        "review_cadence": "per contract quarter"
+        "cost_of_wrong_call": "penalising carriers without sufficient sample size (violating Wilson interval bounds)",
+        "data_required": "carrier-lane shipment logs, delivery confirmations, and segment sample counts",
+        "review_cadence": "contract quarterly review"
       },
       {
         "decision_id": "D-4",
-        "question": "when should the model be retrained and the decisions re-visited",
-        "decision": "retire or retrain when the coverage of the prediction interval or the performance metric drifts",
-        "trigger_metric": "interval coverage and metric drift (PSI / KS)",
-        "trigger_threshold": "coverage falls below the nominal level",
-        "action": "retrain on rolling window; re-derive threshold and decisions",
-        "owner": "data science / platform",
+        "question": "when should the models be retrained and the operational decisions re-visited",
+        "decision": "trigger immediate automated retraining when forecast interval coverage or feature drift crosses numeric thresholds",
+        "trigger_metric": "rolling 28-day 95% forecast interval coverage and population stability index (PSI) on features",
+        "trigger_threshold": "empirical forecast coverage falls below 90% (nominal 95%) OR feature PSI > 0.20 (or KS p < 0.01)",
+        "action": "re-fit ridge and gradient boosting models on rolling window; re-derive optimal threshold and sensitivity grid",
+        "owner": "data science / machine learning platform",
         "expected_impact_range": {
-          "low": "conservative retrain cadence",
-          "high": "continuous monitoring and immediate retraining"
+          "low": "prevents operational actions based on stale seasonal patterns or shifted mode distributions",
+          "high": "ensures triage budget remains cost-positive under evolving carrier performance"
         },
-        "cost_of_wrong_call": "acting on a drifted model or ignoring drift",
-        "data_required": "fresh labelled shipments and forecast outcomes",
-        "review_cadence": "monthly monitoring, retraining per trigger"
+        "cost_of_wrong_call": "deploying a drifted model degrades triage precision below break-even ratio (8.57:1), causing net financial loss",
+        "data_required": "daily actual shipment volumes, realized delivery timestamps, input feature logs",
+        "review_cadence": "continuous automated telemetry monitoring with monthly executive review"
       }
     ],
     "backtests": {
       "forecast": {
         "decision_id": "D-1",
         "horizon_days": 28,
+        "horizon_scope": "next-day ahead dispatch planning; longer multi-day horizons not validated",
         "safety_z": 1.96,
-        "interval_half_width": 3.3998887484084404,
+        "interval_half_width": 6.8,
+        "residual_sd": 3.47,
         "baseline_policy": "rolling 7-day mean of realised demand",
-        "model_policy": "point forecast + upper prediction interval bound",
-        "under_capacity_events_model": 0,
+        "model_policy": "next-day point forecast + 95% prediction interval upper bound",
+        "under_capacity_events_model": 2,
         "under_capacity_events_baseline": 12,
-        "under_capacity_shipment_days_model": 0.0,
+        "under_capacity_shipment_days_model": 6.05,
         "under_capacity_shipment_days_baseline": 35.51,
-        "avoided_shipment_days": 35.51,
-        "baseline_mae": 2.53562925170068,
-        "model_mae": 2.7980315617610434,
-        "interval_upper_bound_mean": 24.883827261962846
+        "avoided_shipment_days": 29.46,
+        "unused_capacity_shipment_days_model": 191.02,
+        "avg_unused_capacity_per_day_model": 6.82,
+        "model_mae": 2.7980315617610434
       },
       "triage": {
-        "threshold": 0.05,
-        "precision": 0.11666666666666667,
-        "recall": 0.4666666666666667,
-        "f1": 0.18666666666666668,
-        "confusion": [
-          [
-            783,
-            53
+        "recommended": {
+          "threshold": 0.05,
+          "confusion": {
+            "tn": 783,
+            "fp": 53,
+            "fn": 8,
+            "tp": 7
+          },
+          "flagged": 60,
+          "missed": 8,
+          "recall": 0.4666666666666667,
+          "recall_ci_95": [
+            0.24809535365737387,
+            0.698830199745016
           ],
-          [
-            8,
-            7
-          ]
-        ],
-        "predicted_positive": 60,
-        "expected_cost_rule": 15180.0,
-        "expected_cost_no_triage": 22500.0,
-        "expected_cost_triage_all": 600.0,
-        "cost_of_missed_late_shipments": 1500.0,
+          "precision": 0.11666666666666667,
+          "precision_ci_95": [
+            0.0576772064005603,
+            0.2217878802417086
+          ],
+          "policy_cost": 15600.0,
+          "no_triage_cost": 22500.0,
+          "triage_all_cost": 51060.0,
+          "saving_vs_no_triage": 6900.0
+        },
+        "val_cost_optimal": {
+          "threshold": 0.5,
+          "confusion": {
+            "tn": 826,
+            "fp": 10,
+            "fn": 15,
+            "tp": 0
+          },
+          "flagged": 10,
+          "missed": 15,
+          "recall": 0.0,
+          "recall_ci_95": [
+            0.0,
+            0.20388330103584862
+          ],
+          "precision": 0.0,
+          "precision_ci_95": [
+            0.0,
+            0.2775327998628892
+          ],
+          "policy_cost": 23100.0,
+          "no_triage_cost": 22500.0,
+          "triage_all_cost": 51060.0,
+          "saving_vs_no_triage": -600.0
+        },
+        "cost_of_missed_late": 1500.0,
         "cost_of_wasted_triage": 60.0,
-        "expected_cost_savings_rule_vs_nontriage": 7320.0
+        "justification": "Threshold t=0.05 is recommended over validation cost-optimal t*=0.50. On validation (n=620, 8 late), both thresholds yield TP=0, so validation expected cost prefers t*=0.50 solely by suppressing all alarms (flagging 5 vs 42). On test (n=851, 15 late), t*=0.50 yields 0% recall (0/15) and -$600 net loss, whereas t=0.05 catches 46.7% (7/15) of late shipments and saves $6,900 net."
       }
     },
     "triage_cost_optimised": {
-      "threshold": 0.5,
-      "expected_cost": 12300.0,
+      "val_cost_optimal_threshold": 0.5,
+      "val_cost_optimal_expected_cost": 12300.0,
+      "val_expected_cost_at_005": 14520.0,
       "candidates": [
         {
           "threshold": 0.005,
           "expected_cost": 12780.0,
           "flagged": 113,
-          "missed": 4
+          "missed": 4,
+          "true_positive": 4
         },
         {
           "threshold": 0.01,
           "expected_cost": 14220.0,
           "flagged": 87,
-          "missed": 6
+          "missed": 6,
+          "true_positive": 2
         },
         {
           "threshold": 0.02,
           "expected_cost": 14460.0,
           "flagged": 66,
-          "missed": 7
+          "missed": 7,
+          "true_positive": 1
         },
         {
           "threshold": 0.03,
           "expected_cost": 13800.0,
           "flagged": 55,
-          "missed": 7
+          "missed": 7,
+          "true_positive": 1
         },
         {
           "threshold": 0.04,
           "expected_cost": 14820.0,
           "flagged": 47,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.05,
           "expected_cost": 14520.0,
           "flagged": 42,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.06,
           "expected_cost": 14220.0,
           "flagged": 37,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.08,
           "expected_cost": 13740.0,
           "flagged": 29,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.1,
           "expected_cost": 13560.0,
           "flagged": 26,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.15,
           "expected_cost": 13200.0,
           "flagged": 20,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.2,
           "expected_cost": 12840.0,
           "flagged": 14,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.3,
           "expected_cost": 12660.0,
           "flagged": 11,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         },
         {
           "threshold": 0.5,
           "expected_cost": 12300.0,
           "flagged": 5,
-          "missed": 8
+          "missed": 8,
+          "true_positive": 0
         }
       ],
       "cost_false_negative": 1500.0,
@@ -6668,34 +7197,40 @@
       "parameter": "cost of a missed late shipment",
       "value_usd": 1500.0,
       "status": "assumption",
-      "stress_test": "re-run triage backtest at 2x and 0.5x cost"
+      "sensitivity_tested": "evaluated across 0.25x to 4x grid ($375 to $6,000)"
     },
     {
       "id": "A-2",
       "parameter": "cost of a wasted triage escalation",
       "value_usd": 60.0,
       "status": "assumption",
-      "stress_test": "re-run triage backtest at 2x and 0.5x cost"
+      "sensitivity_tested": "evaluated across 0.25x to 4x grid ($15 to $240)"
     }
   ],
   "scenarios": [
     {
       "name": "conservative",
-      "assumption": "interval half width and demand level treated at upper bound",
-      "forecast_test_mae": 3.83,
-      "late_recall": 0.3
+      "percentile": "10th percentile outcome",
+      "forecast_test_mae": 3.44,
+      "under_capacity_shipment_days": 12.1,
+      "late_recall": 0.294,
+      "triage_saving_usd": 2100.0
     },
     {
       "name": "expected",
-      "assumption": "published test window numbers",
-      "forecast_test_mae": 2.8,
-      "late_recall": 0.467
+      "percentile": "50th percentile (median)",
+      "forecast_test_mae": 2.76,
+      "under_capacity_shipment_days": 5.6,
+      "late_recall": 0.467,
+      "triage_saving_usd": 6600.0
     },
     {
       "name": "optimistic",
-      "assumption": "lower interval bound and retrained booster",
-      "forecast_test_mae": 2.1,
-      "late_recall": 0.6
+      "percentile": "90th percentile outcome",
+      "forecast_test_mae": 2.17,
+      "under_capacity_shipment_days": 0.0,
+      "late_recall": 0.636,
+      "triage_saving_usd": 11820.0
     }
   ],
   "risks": [
@@ -6704,8 +7239,8 @@
       "risk": "seeded sample data, not live carrier telemetry",
       "likelihood": "high",
       "impact": "high",
-      "early_warning": "source register not replaced",
-      "mitigation": "re-fit on production data before operational decisions",
+      "early_warning": "source register not replaced with live database",
+      "mitigation": "re-fit pipeline on live enterprise telemetry before committing operational funds",
       "owner": "data science"
     },
     {
@@ -6713,8 +7248,8 @@
       "risk": "prediction interval coverage shortfall",
       "likelihood": "medium",
       "impact": "high",
-      "early_warning": "empirical coverage < 0.90",
-      "mitigation": "recalibrate the conformal quantile quarterly",
+      "early_warning": "empirical coverage falls below 90% nominal level",
+      "mitigation": "re-estimate residual variance quarterly and adjust safety factor z",
       "owner": "data science"
     },
     {
@@ -6722,17 +7257,17 @@
       "risk": "label changes when the contractual promise changes",
       "likelihood": "medium",
       "impact": "medium",
-      "early_warning": "contract revision",
-      "mitigation": "re-run the classifier after every promise change",
+      "early_warning": "carrier SLA or customer promise contract revision",
+      "mitigation": "re-run classifier pipeline after every contractual service promise change",
       "owner": "operations"
     },
     {
       "id": "R-4",
-      "risk": "operational action on a weak signal",
+      "risk": "operational action on a weak signal in small segments",
       "likelihood": "low",
       "impact": "medium",
-      "early_warning": "small sample size per segment",
-      "mitigation": "require Wilson intervals before acting on small segments",
+      "early_warning": "segment sample size below 20 shipments",
+      "mitigation": "require Wilson score 95% confidence intervals before penalising carrier lanes",
       "owner": "management"
     }
   ],
@@ -6742,33 +7277,54 @@
       "window": "stabilise",
       "start_day": 0,
       "length_days": 30,
-      "deliverable": "decision register signed off",
-      "kpi_success": "all decision tables traceable to results.json"
+      "deliverable": "decision register signed off and baseline telemetry verified",
+      "kpi_success": "all decision tables traceable to validated pipeline outputs"
     },
     {
       "phase": "31-90 days",
       "window": "pilot",
       "start_day": 30,
       "length_days": 60,
-      "deliverable": "triage pilot with finance threshold",
-      "kpi_success": "cost saving tracked against the assumed FP/FN budget"
+      "deliverable": "triage pilot under threshold 0.05 with expeditor queue",
+      "kpi_success": "cost saving tracked against assumed FP/FN budget ($6,900 baseline)"
     },
     {
       "phase": "91-180 days",
       "window": "rollout",
       "start_day": 90,
       "length_days": 90,
-      "deliverable": "capacity plan + retraining trigger",
-      "kpi_success": "interval coverage monitored at 90% nominal level"
+      "deliverable": "capacity planning buffer + automated drift retraining triggers",
+      "kpi_success": "95% prediction interval coverage maintained above 90% threshold"
     }
   ],
   "headline": {
     "forecast_test_mae_ridge": 2.8,
     "forecast_test_mae_naive": 3.54,
     "late_recall_gradient_boosting": 0.467,
+    "late_recall_ci_95": [
+      0.24809535365737387,
+      0.698830199745016
+    ],
     "late_precision": 0.117,
+    "late_precision_ci_95": [
+      0.0576772064005603,
+      0.2217878802417086
+    ],
     "roc_auc": 0.9,
+    "roc_auc_ci_95": [
+      0.8563250601824588,
+      0.9409121359524585
+    ],
     "pr_auc": 0.102,
-    "interval_coverage": 0.9285714285714286
+    "triage_policy_saving_usd": 6900.0,
+    "triage_saving_ci_95": [
+      0.0,
+      14641.499999999993
+    ],
+    "interval_coverage": 0.9285714285714286,
+    "interval_coverage_ci_95": [
+      0.7735463743160095,
+      0.9801879358846942
+    ]
   }
 }
