@@ -41,3 +41,30 @@ jobs:
         with:
           name: data-quality-report
           path: weeks/week1/reports/data_quality_report.md
+
+  week4:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: weeks/week4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: weeks/week4/requirements.txt
+
+      - name: install
+        run: pip install -r requirements.txt
+
+      - name: unit tests
+        run: python -m pytest -q
+
+      - name: run pipeline and build report
+        run: |
+          python -m src.run_pipeline
+          python -m src.build_report
+          python -m src.audit_report_numbers
+          test -f reports/Week4_Decision_Support_Report.docx

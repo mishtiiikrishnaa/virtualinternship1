@@ -1,0 +1,24 @@
+This report integrates the three previous weeks of the internship into one
+decision-support document. On the seeded development extract of four thousand
+two hundred shipments shipped in twenty twenty five, the ridge demand forecast
+reached a test mean absolute error of two point eight shipments per day against
+three point five four for a naive forecast, an improvement of twenty point nine
+percent. The forecast interval half width is about six point eight shipments
+per day, and the empirical coverage of that band on the held-out window was
+ninety two point eight six percent.
+
+The late-delivery classifier flags shipments that are likely to miss their
+promise. At the chosen threshold of zero point zero five it caught forty six
+point seven percent of late shipments at a precision of eleven point seven
+percent, with a ROC area under the curve of zero point nine. The expected cost
+of a missed late shipment is fifteen hundred dollars and the cost of a wasted
+escalation is sixty dollars.
+
+The report recommends planning capacity against the forecast plus its interval,
+reviewing the triage threshold as the cost ratio moves, reporting service
+performance mode by mode, and retraining quarterly. Every recommendation is tied
+to a number in the results file and audited against it.
+
+The development extract is seeded rather than live, so these are proof of
+concept findings about that extract. The decision framework is written for use
+on top of a retrained model and a re-validated label.

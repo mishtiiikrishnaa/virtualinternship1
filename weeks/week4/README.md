@@ -1,37 +1,69 @@
-# Week 4 — Comprehensive Reporting and Decision Support
+# week 4 — comprehensive reporting and decision support
 
-**Status:** not started. Due in the week beginning 21 November 2026.
+**status:** done. report, pdf and figures rebuilt from the committed scripts.
 
-## Task as set
+## what the task asked for
 
-Compile a self-contained decision-support document that integrates the
-preprocessing, exploratory analysis and predictive modelling from weeks 1–3
-into actionable recommendations for logistics management. It needs an
-introduction, the methodologies used, the analysis, tables and diagrams
-summarising the findings, a discussion of implications and business impact, a
-decision framework with implementation strategy and risk assessment, and an
-appendix carrying the code and detailed methods.
+compile a self-contained decision-support document that integrates the
+preprocessing, exploratory analysis and predictive modelling from weeks 1 to 3
+into actionable recommendations for logistics management, with an executive
+summary, methodology, analysis, strategic recommendations, visual aids, risk
+assessment and implementation strategy.
 
-## Input
+## what is here
 
-Everything already in this repository: the contract and cleaning decisions
-(week 1), the exploratory findings (week 2), the model and its evaluation
-(week 3). Week 4 is integration, not new analysis.
+the week 4 package re-runs the week 1 cleaning implementation over the week 1
+raw extract, reads the week 2 exploratory results, trains the week 3 models on
+the week 1 cleaned extract, and writes `results/results.json`.
 
-## Planned structure
+the decision support layer adds: a full confusion matrix addendum, calibration,
+threshold sweep, split-conformal intervals with empirical coverage, cost-weighted
+decisions, capacity backtest, triage backtest, scenarios, risks and roadmap.
 
-1. Business problem and why the analysis matters operationally.
-2. Method summary — collection, cleaning, EDA, modelling — in one narrative.
-3. Consolidated findings with the tables and diagrams that carry them.
-4. Decision framework: each recommendation tied to the number that supports it,
-   with an implementation sequence and an owner-shaped next step.
-5. Risk assessment, including the risk of acting on a weak signal.
-6. Appendix: code, data dictionary, decision log, reproducibility instructions.
+## pipeline
 
-## Definition of done
+```bash
+cd weeks/week4
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
 
-- A reader who has not seen the code can trace every recommendation back to a
-  number in weeks 1–3.
-- The document states its own limitations without being asked.
-- Nothing claims more than the data supports, and the synthetic provenance of
-  the development extract is stated wherever a figure depends on it.
+python -m src.run_pipeline   # cleaning audit, models, results.json, figures
+python -m src.build_report   # Word report from results.json
+python -m src.audit_report_numbers  # fails on any unmatched number
+python -m pytest -q          # week 4 test suite
+```
+
+from the repository root, `make week4` runs the chain.
+
+## outputs
+
+| path | contents |
+|---|---|
+| `reports/Week4_Decision_Support_Report.docx` | decision-support report |
+| `reports/Week4_Decision_Support_Report.pdf` | pdf proof from libreoffice |
+| `reports/submission_description.txt` | portal description text |
+| `results/results.json` | every number quoted in the report |
+| `reports/figures/` | eleven figures at 300 dpi |
+| `docs/audit.md`, `docs/rubric.md`, `docs/decisions.md`, `docs/reproducibility.md` | audit, rubric, decisions, reproducibility |
+
+## headline results
+
+| measure | value |
+|---|---|
+| forecast test MAE, ridge | 2.80 shipments per day |
+| naive baseline test MAE | 3.54 shipments per day |
+| forecast interval half width | about 6.8 shipments per day |
+| forecast interval coverage | 92.9 percent |
+| late recall at threshold 0.05 | 0.467 |
+| late precision at threshold 0.05 | 0.117 |
+| ROC-AUC | 0.900 |
+| PR-AUC | 0.102 |
+
+## known limits
+
+- the development extract is seeded sample data, not live carrier telemetry;
+- one annual cycle of demand history;
+- the late class is rare and the test window holds few positives;
+- cost assumptions are tagged and stress-tested, not measured.
+
+mishti krishna — github.com/mishtiiikrishnaa

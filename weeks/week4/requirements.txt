@@ -1,0 +1,10 @@
+# Runtime dependencies for the week 4 decision-support package.
+pandas==3.0.1
+numpy==2.5.4
+matplotlib==3.10.8
+seaborn==0.13.2
+scikit-learn==1.8.0
+scipy==1.18.1
+python-docx==1.2.0
+pyyaml==6.0.3
+pytest==9.2.0

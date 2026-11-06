@@ -20,8 +20,9 @@ week3:
 	$(MAKE) -C weeks/week3 all
 
 week4:
-	@echo "week 4 has not started yet — see weeks/week4/README.md"
+	$(MAKE) -C weeks/week4 all
 
 test:
 	cd weeks/week1 && $(PYTHON) -m pytest -q
 	cd weeks/week3 && $(PYTHON) -m pytest -q
+	cd weeks/week4 && $(PYTHON) -m pytest -q
